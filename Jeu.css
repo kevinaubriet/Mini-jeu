@@ -1,0 +1,11 @@
+canvas {
+    border:1px solid;
+}
+
+input:invalid {
+    background-color: pink;
+}
+
+input:valid {
+    background-color: lightgreen;
+}
