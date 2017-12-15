@@ -1,4 +1,4 @@
-class Enemie{
+class Ennemi{
     constructor(posX, posY,typeE){
         this.posX = posX;
         this.posY = posY;
@@ -6,7 +6,7 @@ class Enemie{
     }
 }
 
-class EnemieLeger extends Enemie{
+class EnnemiLeger extends Ennemi{
     constructor(posX,posY){
         super();
         this.pv = 20;
@@ -16,7 +16,7 @@ class EnemieLeger extends Enemie{
 
 }
 
-class EnemieLourd extends Enemie{
+class EnnemiLourd extends Ennemi{
     constructor(posX,posY){
         super();
         this.pv = 50;
