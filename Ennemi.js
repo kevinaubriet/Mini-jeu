@@ -1,5 +1,5 @@
 class Ennemi{
-    constructor(posX, posY,typeE){
+    constructor(posX, posY,typeE, pv, vitesse, degat){
         this.posX = posX;
         this.posY = posY;
         this.typeE = typeE;
@@ -7,21 +7,15 @@ class Ennemi{
 }
 
 class EnnemiLeger extends Ennemi{
-    constructor(posX,posY){
-        super();
-        this.pv = 20;
-        this.vitesse = 10;
-        this.degat = 15;
+    constructor(posX, posY,typeE){
+        super(posX, posY,typeE, 20, 10, 15);
     }
 
 }
 
 class EnnemiLourd extends Ennemi{
-    constructor(posX,posY){
-        super();
-        this.pv = 50;
-        this.vitesse = 5;
-        this.degat = 30;
+    constructor(posX, posY,typeE){
+        super(posX, posY,typeE,50,5,30);
     }
 
 }
