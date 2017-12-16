@@ -30,6 +30,11 @@ function GameFramework(){
         var v = 0;
 
         var p1 = new Player(x, y, v);
+        p1.ActiverArme("fusil_normal");
+        p1.ActiverArme("fusil_sniper");
+        p1.DispoAtout("invincible");
+        p1.ActiverAtout("invincible");
+        console.log(p1.getArmeActive());
 
         tableauObjetGraphiques.push(p1);
     }
