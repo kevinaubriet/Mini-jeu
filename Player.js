@@ -1,9 +1,14 @@
 class Player{
-    constructor(posX,posY,vitesse){
+    constructor(posX,posY,vitesse,pv){
         this.posX = posX;
         this.posY = posY;
+        this.width = 20;                //A modif selon taille voulue
+        this.height = 20;
+        this.posY = posY;
         this.vitesse=vitesse;
-        this.pv = 100;
+        this.vitesseX=0;
+        this.vitesseY=0;
+        this.pv = pv;
         this.armes = new Array(new FusilNormal(),new FusilPompe(),new FusilSniper());
         this.atouts = new Array(new Atout("invincible"),new Atout("degat"));
 
@@ -47,6 +52,51 @@ class Player{
                 this.atouts[i].dispo =true;
             }
         }
+    }
+
+
+
+    actionsPlayer(ctx,w,h){  //differentes actions effectuées dans la boucle d'animation
+        this.draw(ctx);
+        this.move(ctx);
+        this.testCollisionZone(w,h);
+    }
+
+    draw(ctx) {
+        ctx.save();
+        ctx.fillStyle = "black";
+        ctx.fillRect(this.posX, this.posY, this.width, this.height);
+        ctx.restore();
+    }
+
+    move() {
+        this.posX += this.vitesseX;
+        this.posY += this.vitesseY;
+    }
+
+
+
+    testCollisionZone(w, h) {
+        if ((this.posX + this.width) > w) {
+            this.posX=w-this.width;
+        }
+        if (this.posX < 0) {
+            this.posX=0;
+        }
+
+        if ((this.posY + this.height) > h) {
+            this.posY=h-this.height;
+        }
+
+        if (this.posY < 0) {
+            this.posY=0;
+        }
+    }
+
+    retirerPvJoueur(nbr){
+        console.log(this.pv);
+
+        this.pv-=nbr;
     }
 
 }
