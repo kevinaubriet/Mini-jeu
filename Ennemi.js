@@ -75,9 +75,17 @@ class Ennemi {
     }
 
     retirerPvJoueurQuandEnnemiTouche(player,nbr){
-        if(this.touched(player)) player.retirerPvJoueur(nbr);
-
+        if(this.touched(player)) {
+            this.pv=0;
+            player.retirerPvJoueur(nbr);
+        }
     }
+
+    retirerPvEnnemi(nbr){
+        //console.log(this.pv);d
+        this.pv-=nbr;
+    }
+
     /*
     *killEnnemiEtPvMoinsJoueur
     * ne tue pas réelement l'ennemi,

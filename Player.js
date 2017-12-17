@@ -25,7 +25,7 @@ class Player{
     ActiverArme(arme){
         for(var i =0; i<this.armes.length;i++){
             if(this.armes[i].activate==true)
-            this.armes[i].activate = false;
+                this.armes[i].activate = false;
             else if(this.armes[i].nom == arme){
                 this.armes[i].activate = true;
             }
@@ -94,8 +94,6 @@ class Player{
     }
 
     retirerPvJoueur(nbr){
-        console.log(this.pv);
-
         this.pv-=nbr;
     }
 
@@ -111,5 +109,5 @@ class Atout{
 
 
 
-    
+
 }

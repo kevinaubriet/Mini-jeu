@@ -13,14 +13,15 @@ function GameFramework(){
 
     function init() {
 
-         canvas = document.querySelector("#myCanvas");
-         ctx = canvas.getContext("2d");
-         w = canvas.width;
-         h = canvas.height;
+        canvas = document.querySelector("#myCanvas");
+        ctx = canvas.getContext("2d");
+        w = canvas.width;
+        h = canvas.height;
 
         creerJoueur();
         creerEnnemisLeger(2);
-       // creerEnnemisLourd(1);
+        creerEnnemisLourd(10);
+
 
 
 
@@ -43,7 +44,7 @@ function GameFramework(){
 
             } else if (event.keyCode === 32) {
                 inputStates.space = true;
-
+                creerProjectile();
             }
         }, false);
 
@@ -145,7 +146,17 @@ function GameFramework(){
             var e = new EnnemiLourd(x,y,"l",taille,vitesse,pv);
 
             tableauObjetGraphiques.push(e);
+
         }
+    }
+
+    function creerProjectile(){
+        //forme,degat,vitesse,posX,posY,couleur,taille
+
+        var projectile=new Projectile("carrée",5,3,player.posX+player.width/2,player.posY,"red",1);
+        tableauObjetGraphiques.push(projectile);
+        // console.log(projectile);
+
     }
 
 
@@ -163,15 +174,19 @@ function GameFramework(){
 
         tableauObjetGraphiques.forEach(function (e) {  //e pour element du tableau
 
-            killMe(e);
 
             if (e instanceof Player){
                 e.actionsPlayer(ctx,w,h);
             }
 
-           else if (e instanceof Ennemi){
+            else if (e instanceof Ennemi){
                 e.actionsEnnemi(ctx,w,h,player);
             }
+            else if (e instanceof Projectile){
+                e.actionsProjectile(ctx,w,h,player,tableauObjetGraphiques);
+            }
+
+            killMe(e);//Mettre a la fin pour eliminer plsx ennemis?
 
         });
 
@@ -192,7 +207,7 @@ function GameFramework(){
         creerEnnemisLourd:creerEnnemisLourd,*/
         getTableauObjetsGraphiques:getTableauObjetsGraphiques
 
-  }
+    }
 
 
 
