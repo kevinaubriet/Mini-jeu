@@ -71,7 +71,7 @@ class Projectile{
         var self=this;       //SALE MAMENE UNE SOLUTION?
         tableauObjetGraphiques.forEach(function (e) {
             if (e instanceof Ennemi){
-                self.degatEnnemi(e,100);
+                self.degatEnnemi(e,self.degat);
             }
         });
     }
@@ -83,6 +83,10 @@ class Projectile{
         return false;
     }
 
+    killProjectile(){
+        this.degat=0;
+        this.pv=0;
+    }
 /*
 * Cette fonction verifie si l'ennemi est touché
 * si oui detruit le projectile en le mettant a 0pv
@@ -92,8 +96,8 @@ class Projectile{
 */
     degatEnnemi(ennemi,nbr){
         if(this.touched(ennemi)){
-            this.pv=0;
             ennemi.retirerPvEnnemi(nbr);
+            this.killProjectile();
         }
     }
 }

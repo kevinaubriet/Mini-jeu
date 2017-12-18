@@ -1,5 +1,23 @@
 window.onload = init;
+var particles = [];
 
+
+
+/*Ajout de plein de trucs et amélioration de plein de truc mais je sais plus quoi :D
+*Et les particules pour modfier des props de ca appelle moi je t'explique
+* ==>Methode actionJeu applique diffirentes methodes dans la boucle d'animation dont killME
+ */
+/*IDEE
+*Integrer les action de changement d'arme dans le listener des controle de deplacement?
+* Retirer les commentaire de selection d'arme?
+* Rendre bien propre les fonction creeXXXX de jeu.js
+*
+ */
+
+/*
+pluiseurs ennemis
+/*corection dans projectile retirer pv
+ */
 function init() {
     gf = new GameFramework();
     gf.init();
@@ -19,8 +37,8 @@ function GameFramework(){
         h = canvas.height;
 
         creerJoueur();
-        creerEnnemisLeger(2);
-        creerEnnemisLourd(10);
+        creerEnnemisLeger(4);
+        creerEnnemisLourd(1);
 
 
 
@@ -71,7 +89,31 @@ function GameFramework(){
             }
         }, false);
 
+        window.addEventListener('keydown', function(event) {
 
+            if(event.keyCode == 73){
+                if(player.getArmeActive().nom != "fusil_normal"){
+                    player.ActiverArme("fusil_normal");
+                }
+                else {
+                    console.log("arme déja active");
+                }
+
+            } else if(event.keyCode == 79){
+                if(player.getArmeActive().nom != "fusil_pompe"){
+                    player.ActiverArme("fusil_pompe");
+                }else{
+                    console.log("arme déja active");
+                }
+
+            }else if(event.keyCode == 80){
+                if(player.getArmeActive().nom != "fusil_sniper"){
+                    player.ActiverArme("fusil_sniper");
+                }else{
+                    console.log("arme déja active");
+                }
+            }
+        }, false);
 
         requestAnimationFrame(anime);
     }
@@ -150,23 +192,46 @@ function GameFramework(){
         }
     }
 
+
+
     function creerProjectile(){
         //forme,degat,vitesse,posX,posY,couleur,taille
 
-        var projectile=new Projectile("carrée",5,3,player.posX+player.width/2,player.posY,"red",1);
+        var armeCourante = player.getArmeActive();
+
+        if(armeCourante instanceof FusilNormal){
+            var projectile=new Projectile("carrée",25,3,player.posX+player.width/2,player.posY,"red",1);
+
+        }else if(armeCourante instanceof FusilSniper){
+            var projectile=new Projectile("carrée",10,10,player.posX+player.width/2,player.posY,"green",1);
+
+        }else if(armeCourante instanceof FusilPompe){
+            var projectile=new Projectile("carrée",50,1.5,player.posX+player.width/2,player.posY,"blue",1);
+        }
         tableauObjetGraphiques.push(projectile);
-        // console.log(projectile);
 
     }
 
 
     function killMe(e) {
         if(e.pv<=0){
+
             tableauObjetGraphiques.splice(tableauObjetGraphiques.indexOf(e),1);
-            console.log(tableauObjetGraphiques);
+           if(e instanceof Ennemi){
+                if(!e.EnnemiEnDehorsCadre(h))
+               startDoubleExplosion((e.posX+e.taille/2),(e.posY+e.taille/2));
+           }
+            //console.log(tableauObjetGraphiques);
             return true;
         }
         else return false;
+    }
+
+    function actionJeu(e,ctx) {
+        killMe(e);
+        if(particles.length!=0){
+            updateAndDrawParticules(1,ctx)
+        }
     }
 
     function anime(timmeElapsed) {
@@ -174,6 +239,7 @@ function GameFramework(){
 
         tableauObjetGraphiques.forEach(function (e) {  //e pour element du tableau
 
+            actionJeu(e,ctx);
 
             if (e instanceof Player){
                 e.actionsPlayer(ctx,w,h);
@@ -181,16 +247,14 @@ function GameFramework(){
 
             else if (e instanceof Ennemi){
                 e.actionsEnnemi(ctx,w,h,player);
+
             }
             else if (e instanceof Projectile){
                 e.actionsProjectile(ctx,w,h,player,tableauObjetGraphiques);
             }
 
-            killMe(e);//Mettre a la fin pour eliminer plsx ennemis?
 
         });
-
-
 
         requestAnimationFrame(anime);
     }

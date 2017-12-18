@@ -22,6 +22,7 @@ class Ennemi {
         this.draw(ctx);
         this.move(ctx);
         this.testCollisionZone(w,h);
+        console.log(this.EnnemiEnDehorsCadre(h));
 
         if (this instanceof EnnemiLeger){
             this.retirerPvJoueurQuandEnnemiTouche(player,1);
@@ -82,8 +83,7 @@ class Ennemi {
     }
 
     retirerPvEnnemi(nbr){
-        //console.log(this.pv);d
-        this.pv-=nbr;
+        this.pv -= nbr;
     }
 
     /*
@@ -96,10 +96,16 @@ class Ennemi {
     * testColissionZone
      */
     killEnnemiEtPvMoinsJoueur(h,player,nbr){
-        if ((this.posY ) > h) {
+        if (this.EnnemiEnDehorsCadre(h)) {
             this.pv = 0;
             player.retirerPvJoueur(nbr);
         }
+    }
+    EnnemiEnDehorsCadre(h){
+        if((this.posY)>h){
+            return true
+        }
+        else return false;
     }
 
 }
