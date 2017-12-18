@@ -54,8 +54,6 @@ class Player{
         }
     }
 
-
-
     actionsPlayer(ctx,w,h){  //differentes actions effectuées dans la boucle d'animation
         this.draw(ctx);
         this.move(ctx);
@@ -66,6 +64,8 @@ class Player{
         ctx.save();
         ctx.fillStyle = "black";
         ctx.fillRect(this.posX, this.posY, this.width, this.height);
+        ctx.fillStyle = "white";
+        ctx.fillText(this.pv,this.posX,this.posY+this.height/2,this.height);
         ctx.restore();
     }
 

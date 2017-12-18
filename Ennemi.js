@@ -15,6 +15,8 @@ class Ennemi {
         ctx.save();
         ctx.fillStyle = "grey";
         ctx.fillRect(this.posX, this.posY, this.taille, this.taille);
+        ctx.fillStyle = "white";
+        ctx.fillText(this.pv,this.posX,this.posY+this.taille/2,this.taille);
         ctx.restore();
     }
 
