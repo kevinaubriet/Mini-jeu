@@ -35,10 +35,12 @@ function GameFramework(){
         ctx = canvas.getContext("2d");
         w = canvas.width;
         h = canvas.height;
+        var available = true;
 
         creerJoueur();
         creerEnnemisLeger(4);
         creerEnnemisLourd(1);
+        creerAtout();
 
 
 
@@ -112,6 +114,10 @@ function GameFramework(){
                 }else{
                     console.log("arme déja active");
                 }
+            }else if(event.keyCode == 75){
+                player.ActiverAtout("invincible");
+            }else if(event.keyCode == 76){
+                player.ActiverAtout("degat");
             }
         }, false);
 
@@ -129,13 +135,19 @@ function GameFramework(){
 
         var p1 = new Player(x, y, v,pv);
         p1.ActiverArme("fusil_normal");
-        p1.ActiverArme("fusil_sniper");
-        p1.DispoAtout("invincible");
-        p1.ActiverAtout("invincible");
-        console.log(p1.getArmeActive());
+        //p1.ActiverArme("fusil_sniper");
+        //p1.DispoAtout("invincible");
+        //p1.ActiverAtout("invincible");
+        //console.log(p1.getArmeActive());
 
         player=p1;
         tableauObjetGraphiques.push(p1);
+    }
+
+    function creerAtout(){
+        //ajouter hasard dans la création : ou invincible ou degat / hasard de position
+        var e = new Atout("degat",100,200);
+        tableauObjetGraphiques.push(e);
     }
 
     function creerEnnemisLeger(n){
@@ -192,7 +204,19 @@ function GameFramework(){
         }
     }
 
+    function tir(available) {
 
+        if(available == true){
+            creerProjectile();
+            available = false;
+        }else{
+            window.setTimeout(function () {
+                available= true
+            },3000);
+        }
+        console.log("rentre");
+
+    }
 
     function creerProjectile(){
         //forme,degat,vitesse,posX,posY,couleur,taille
@@ -200,13 +224,13 @@ function GameFramework(){
         var armeCourante = player.getArmeActive();
 
         if(armeCourante instanceof FusilNormal){
-            var projectile=new Projectile("carrée",25,3,player.posX+player.width/2,player.posY,"red",1);
+            var projectile=new Projectile("carrée",25*player.multDegat,3,player.posX+player.width/2,player.posY,"red",1);
 
         }else if(armeCourante instanceof FusilSniper){
-            var projectile=new Projectile("carrée",10,10,player.posX+player.width/2,player.posY,"green",1);
+            var projectile=new Projectile("carrée",10*player.multDegat,10,player.posX+player.width/2,player.posY,"green",1);
 
         }else if(armeCourante instanceof FusilPompe){
-            var projectile=new Projectile("carrée",50,1.5,player.posX+player.width/2,player.posY,"blue",1);
+            var projectile=new Projectile("carrée",50*player.multDegat,1.5,player.posX+player.width/2,player.posY,"blue",1);
         }
         tableauObjetGraphiques.push(projectile);
 
@@ -252,10 +276,14 @@ function GameFramework(){
             else if (e instanceof Projectile){
                 e.actionsProjectile(ctx,w,h,player,tableauObjetGraphiques);
             }
+            else if (e instanceof Atout){
+                e.actionsAtout(ctx,player);
+            }
 
 
         });
 
+        //console.log(player.multDegat);
         requestAnimationFrame(anime);
     }
 

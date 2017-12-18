@@ -11,7 +11,8 @@ class Player{
         this.pv = pv;
         this.armes = new Array(new FusilNormal(),new FusilPompe(),new FusilSniper());
         this.atouts = new Array(new Atout("invincible"),new Atout("degat"));
-
+        this.multDegat = 1;
+        this.invincible = false;
     }
 
     getArmeActive(){
@@ -35,11 +36,31 @@ class Player{
     ActiverAtout(atout){
         for(var i = 0;i<this.atouts.length;i++){
             if(this.atouts[i].dispo == false && this.atouts[i].nom == atout){
-                console.log("atout pas dispo");
-            } else if(this.atouts[i].dispo == true && this.atouts[i].nom == atout){
-                //action à faire selon attout
-                console.log("atout activé !");
-                this.atouts[i].dispo == false;
+                console.log("atout "+this.atouts[i].nom +" pas dispo");
+            }
+            else if(this.atouts[i].dispo == true && this.atouts[i].nom == atout){
+
+                if(atout == "degat"){
+                    let j =this; //SALE MAMENE
+                    this.multDegat = 2;
+                    setTimeout(function () {
+                        j.multDegat = 1;
+                    },5000);// TEMPS DE L'ACTION = 5s
+
+                    console.log("degattttt activé");
+                    this.atouts[i].dispo = false;
+                }
+                else if(atout == "invincible"){
+                    let j =this;//SALE MAMENE
+                    this.invincible = true;
+                    setTimeout(function () {
+                        j.invincible = false;
+                    },5000);// TEMPS DE L'ACTION = 5s
+
+                    console.log("inviiincible activé");
+                    this.atouts[i].dispo = false;
+                }
+
             }
 
 
@@ -101,13 +122,42 @@ class Player{
 
 
 class Atout{
-    constructor(nom){
+    constructor(nom,posX,posY){
         this.nom = nom;
+        this.posX = posX;
+        this.posY = posY;
+        this.pv = 1;
         this.dispo = false;
         this.activate = false;
     }
 
+    draw(ctx){
+        ctx.save();
+
+        ctx.fillStyle="red";
+        ctx.fillRect(this.posX,this.posY,10, 10);
 
 
+        ctx.restore();
+    }
+
+    actionsAtout(ctx,player){
+        this.draw(ctx);
+        if(this.touched(player)){
+            player.DispoAtout(this.nom);
+            this.pv=0;
+            console.log("touché");
+        }
+
+    }
+
+
+
+    touched(player) {
+        if (((this.posX <= player.posX && (player.posX <= (this.posX)) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX))) && ((this.posY <= player.posY && (player.posY <= (this.posY)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY)))) {
+            return true;
+        }
+        return false;
+    }
 
 }

@@ -3,6 +3,7 @@ class Arme{
         this.activate = false;
     }
 
+
 }
 
 class FusilNormal extends Arme{

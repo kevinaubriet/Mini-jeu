@@ -24,7 +24,6 @@ class Ennemi {
         this.draw(ctx);
         this.move(ctx);
         this.testCollisionZone(w,h);
-        console.log(this.EnnemiEnDehorsCadre(h));
 
         if (this instanceof EnnemiLeger){
             this.retirerPvJoueurQuandEnnemiTouche(player,1);
@@ -136,9 +135,5 @@ class EnnemiLourd extends Ennemi{
             this.vitesseX=0;
         }
     }
-
-
-
-
 
 }
