@@ -3,7 +3,7 @@ class Ennemi {
         this.posX = posX;
         this.posY= posY;
         this.vitesse=vitesse; //vitesse maximale
-        this.vitesseX=vitesse;
+        this.vitesseX=this.randomVitesseX(2);
         this.vitesseY=vitesse;
         this.pv=pv;
         this.typeE = typeE;
@@ -18,6 +18,16 @@ class Ennemi {
         ctx.fillStyle = "white";
         ctx.fillText(this.pv,this.posX,this.posY+this.taille/2,this.taille);
         ctx.restore();
+    }
+
+    randomVitesseX(ratioVitesse) {
+        var signe = Math.random();
+        if (signe < 0.5) {
+            return -ratioVitesse * Math.random();
+        }
+        else {
+            return ratioVitesse * Math.random();
+        }
     }
 
     actionsEnnemi(ctx,w,h,player){  //differentes actions effectuées dans la boucle d'animation

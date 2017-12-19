@@ -60,7 +60,7 @@ class Projectile{
     testCollisionZone(w, h) {
 
         if (this.posY+5 <=0) {
-            this.pv=0
+            this.killProjectile();
         }
 
     }
