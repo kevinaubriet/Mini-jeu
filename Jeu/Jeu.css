@@ -1,0 +1,72 @@
+canvas {
+    border:1px solid;
+
+}
+
+#mainWindow{
+    text-align: center;
+}
+#mainWindow >div{
+    display: inline-block;
+}
+
+
+#atouts{
+    position: absolute;
+    margin-top: 480px;
+    margin-right: 200px;
+}
+
+#atouts div{
+    background-color: black;
+    margin-bottom: 10px;
+    width: 50px;
+    height: 50px;
+    border: solid black;
+    border-radius: 10px;
+    text-align: center;
+
+}
+
+#atouts div img{
+    margin-top: 1px;
+    width: 45px;
+    height: 45px;
+}
+#armes{
+    position: absolute;
+    margin-top: 415px;
+}
+
+#armes div{
+    background-color: black;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    width: 50px;
+    height: 50px;
+    border: solid black;
+    border-radius: 10px;
+    text-align: center;
+
+}
+
+#armes div img{
+    margin-top: 2px;
+    width: 45px;
+    height: 45px;
+}
+#divCanvas{
+    margin-left: 65px;
+}
+#myCanvas{
+    background: url(../ressources/background.jpg) no-repeat center center;
+
+}
+input:invalid {
+    background-color: pink;
+}
+
+input:valid {
+    background-color: lightgreen;
+}
+

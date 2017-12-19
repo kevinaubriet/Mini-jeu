@@ -42,9 +42,11 @@ class Player{
 
                 if(atout == "degat"){
                     let joueur =this; //SALE MAMENE
+                    this.atouts[i].activate = true;
                     this.multDegat = 2;
                     setTimeout(function () {
                         joueur.multDegat = 1;
+                        joueur.atouts[1].activate = false;
                     },joueur.atouts[i].time);// TEMPS DE L'ACTION = 5s
 
                     console.log("degattttt activé");
@@ -52,9 +54,11 @@ class Player{
                 }
                 else if(atout == "invincible"){
                     let joueur =this;//SALE MAMENE
+                    this.atouts[i].activate = true;
                     this.invincible = true;
                     setTimeout(function () {
                         joueur.invincible = false;
+                        joueur.atouts[0].activate = false;
                     },joueur.atouts[i].time);// TEMPS DE L'ACTION = 5s
 
                     console.log("inviiincible activé");
@@ -83,9 +87,9 @@ class Player{
 
     draw(ctx) {
         ctx.save();
-        ctx.fillStyle = "black";
-        ctx.fillRect(this.posX, this.posY, this.width, this.height);
         ctx.fillStyle = "white";
+        ctx.fillRect(this.posX, this.posY, this.width, this.height);
+        ctx.fillStyle = "black";
         ctx.fillText(this.pv,this.posX,this.posY+this.height/2,this.height);
         ctx.restore();
     }

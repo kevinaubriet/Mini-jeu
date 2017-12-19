@@ -248,7 +248,7 @@ function GameFramework(){
                 //Permet de calculer le score
                 addScore(25,e,player,h);
             }
-            console.log(/*tableauObjetGraphiques*/score);
+            //console.log(/*tableauObjetGraphiques*/score);
             return true;
         }
         else return false;
@@ -263,7 +263,7 @@ function GameFramework(){
 
     function drawScore(ctx) {
         ctx.save();
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "white";
         ctx.font="20px Georgia";
         ctx.fillText(score,10,20,10);
         ctx.restore();
@@ -275,6 +275,8 @@ function GameFramework(){
             updateAndDrawParticules(1,ctx)
         }
         drawScore(ctx);
+        affichageArme();
+        affichageAtout();
     }
 
     function anime(timmeElapsed) {
@@ -309,6 +311,46 @@ function GameFramework(){
 
     function getTableauObjetsGraphiques() {
         return tableauObjetGraphiques;
+    }
+
+    function affichageArme(){
+        var armeActive = player.getArmeActive().nom;
+
+
+        //met tous les couleur des indicateurs de selection d'arme en noir
+        document.getElementById("fusil_normal").style.backgroundColor = "black";
+        document.getElementById("fusil_pompe").style.backgroundColor = "black";
+        document.getElementById("fusil_sniper").style.backgroundColor = "black";
+
+        elem = document.getElementById(armeActive);
+        elem.style.backgroundColor = "gold";
+    }
+
+    function affichageAtout() {
+        var atouts = player.atouts;
+
+        for(let i=0;i<atouts.length;i++){
+
+            if(atouts[i].dispo){
+                if(atouts[i].activate){
+                    document.getElementById(atouts[i].nom).style.backgroundColor = "gold";
+                    console.log("dispo et activé");
+                }else{
+                    document.getElementById(atouts[i].nom).style.backgroundColor = "white";
+                    console.log("dispo et pas activé");
+                }
+            }
+            else{
+                if(atouts[i].activate){
+                    document.getElementById(atouts[i].nom).style.backgroundColor = "gold";
+                    console.log("pas dispo et activé");
+                }else{
+                    document.getElementById(atouts[i].nom).style.backgroundColor = "black";
+                    console.log("pas dispo et pas activé");
+                }
+            }
+
+        }
     }
 
     return {
