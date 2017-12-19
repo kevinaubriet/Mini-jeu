@@ -89,7 +89,9 @@ class Ennemi {
     retirerPvJoueurQuandEnnemiTouche(player,nbr){
         if(this.touched(player)) {
             this.pv=0;
-            player.retirerPvJoueur(nbr);
+            if(!player.invincible){
+                player.retirerPvJoueur(nbr);
+            }
         }
     }
 
@@ -109,7 +111,9 @@ class Ennemi {
     killEnnemiEtPvMoinsJoueur(h,player,nbr){
         if (this.EnnemiEnDehorsCadre(h)) {
             this.pv = 0;
-            player.retirerPvJoueur(nbr);
+            if(!player.invincible){
+                player.retirerPvJoueur(nbr);
+            }
         }
     }
     EnnemiEnDehorsCadre(h){
