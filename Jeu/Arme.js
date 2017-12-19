@@ -88,13 +88,13 @@ class Projectile{
         this.degat=0;
         this.pv=0;
     }
-/*
-* Cette fonction verifie si l'ennemi est touché
-* si oui detruit le projectile en le mettant a 0pv
-* et baisse les pv
-*
-* PB==> detruit plsr ennemies a la foid
-*/
+    /*
+    * Cette fonction verifie si l'ennemi est touché
+    * si oui detruit le projectile en le mettant a 0pv
+    * et baisse les pv
+    *
+    * PB==> detruit plsr ennemies a la foid
+    */
     degatEnnemi(ennemi,nbr){
         if(this.touched(ennemi)){
             ennemi.retirerPvEnnemi(nbr);

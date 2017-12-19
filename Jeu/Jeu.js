@@ -115,7 +115,7 @@ function GameFramework(){
                 }else{
                     console.log("arme déja active");
                 }
-            }else if(event.keyCode == 75){
+            }else if(event.keyCode == 77){
                 player.ActiverAtout("invincible");
             }else if(event.keyCode == 76){
                 player.ActiverAtout("degat");
@@ -147,7 +147,7 @@ function GameFramework(){
 
     function creerAtout(){
         //ajouter hasard dans la création : ou invincible ou degat / hasard de position
-        var e = new Atout("degat",100,200);
+        var e = new Atout("invincible",100,200);
         tableauObjetGraphiques.push(e);
     }
 
@@ -334,19 +334,30 @@ function GameFramework(){
             if(atouts[i].dispo){
                 if(atouts[i].activate){
                     document.getElementById(atouts[i].nom).style.backgroundColor = "gold";
-                    console.log("dispo et activé");
+                    //console.log("dispo et activé");
                 }else{
-                    document.getElementById(atouts[i].nom).style.backgroundColor = "white";
-                    console.log("dispo et pas activé");
+                    let nomimg = atouts[i].nom+"img";
+
+                    document.getElementById(atouts[i].nom).style.backgroundColor = "black";
+                    //document.getElementById(atouts[i].nom+"img").style.display="block";
+                    document.getElementById(nomimg).style.display="block";
+
+                    //console.log("dispo et pas activé");
                 }
             }
             else{
                 if(atouts[i].activate){
+                    let nomimg = atouts[i].nom+"img";
+
                     document.getElementById(atouts[i].nom).style.backgroundColor = "gold";
-                    console.log("pas dispo et activé");
+                    document.getElementById(nomimg).style.display="block";
+                    //console.log("pas dispo et activé");
                 }else{
+                    let nomimg = atouts[i].nom+"img";
+
                     document.getElementById(atouts[i].nom).style.backgroundColor = "black";
-                    console.log("pas dispo et pas activé");
+                    document.getElementById(nomimg).style.display="none";
+                    //console.log("pas dispo et pas activé");
                 }
             }
 

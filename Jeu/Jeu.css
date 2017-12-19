@@ -1,10 +1,19 @@
-canvas {
-    border:1px solid;
 
+@font-face {
+    font-family: Badass;
+    src: url("../ressources/astron/astron.ttf");
+    src: url("../ressources/astron/astron boy italic.ttf");
+    src: url("../ressources/astron/astron boy video.ttf");
+    src: url("../ressources/astron/astron boy wonder.ttf");
+
+    font-weight: normal;
+    font-style: normal;
 }
 
+
+
 #mainWindow{
-    text-align: center;
+text-align: center;
 }
 #mainWindow >div{
     display: inline-block;
@@ -25,13 +34,28 @@ canvas {
     border: solid black;
     border-radius: 10px;
     text-align: center;
-
 }
 
 #atouts div img{
-    margin-top: 1px;
-    width: 45px;
-    height: 45px;
+     margin-top: 1px;
+     width: 45px;
+     height: 45px;
+    display: block;
+ }
+
+#atouts div h2{
+    color: white;
+    font-family: Badass;
+    font-size: 35px;
+    margin-top: 7px;
+    margin-right: 5px;
+}
+#atouts div p{
+    color: white;
+    font-family: Badass;
+    font-size: 35px;
+    margin-top: 7px;
+    margin-right: 5px;
 }
 #armes{
     position: absolute;
@@ -60,7 +84,7 @@ canvas {
 }
 #myCanvas{
     background: url(../ressources/background.jpg) no-repeat center center;
-
+    height: 600px;
 }
 input:invalid {
     background-color: pink;
