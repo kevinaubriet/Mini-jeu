@@ -41,21 +41,21 @@ class Player{
             else if(this.atouts[i].dispo == true && this.atouts[i].nom == atout){
 
                 if(atout == "degat"){
-                    let j =this; //SALE MAMENE
+                    let joueur =this; //SALE MAMENE
                     this.multDegat = 2;
                     setTimeout(function () {
-                        j.multDegat = 1;
-                    },5000);// TEMPS DE L'ACTION = 5s
+                        joueur.multDegat = 1;
+                    },joueur.atouts[i].time);// TEMPS DE L'ACTION = 5s
 
                     console.log("degattttt activé");
                     this.atouts[i].dispo = false;
                 }
                 else if(atout == "invincible"){
-                    let j =this;//SALE MAMENE
+                    let joueur =this;//SALE MAMENE
                     this.invincible = true;
                     setTimeout(function () {
-                        j.invincible = false;
-                    },5000);// TEMPS DE L'ACTION = 5s
+                        joueur.invincible = false;
+                    },joueur.atouts[i].time);// TEMPS DE L'ACTION = 5s
 
                     console.log("inviiincible activé");
                     this.atouts[i].dispo = false;
@@ -129,6 +129,7 @@ class Atout{
         this.pv = 1;
         this.dispo = false;
         this.activate = false;
+        this.time = 5000;
     }
 
     draw(ctx){
@@ -154,7 +155,7 @@ class Atout{
 
 
     touched(player) {
-        if (((this.posX <= player.posX && (player.posX <= (this.posX)) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX))) && ((this.posY <= player.posY && (player.posY <= (this.posY)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY)))) {
+        if (((this.posX <= player.posX && (player.posX <= (this.posX+10)) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX+10))) && ((this.posY <= player.posY && (player.posY <= (this.posY+10)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY+10)))) {
             return true;
         }
         return false;

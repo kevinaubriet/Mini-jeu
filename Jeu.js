@@ -26,6 +26,7 @@ function init() {
 
 function GameFramework(){
     var canvas,ctx,w,h,player;
+    var score = 0;
     var inputStates = [];
     var tableauObjetGraphiques = [];
 
@@ -241,14 +242,31 @@ function GameFramework(){
         if(e.pv<=0){
 
             tableauObjetGraphiques.splice(tableauObjetGraphiques.indexOf(e),1);
-           if(e instanceof Ennemi){
+            if(e instanceof Ennemi){
                 if(!e.EnnemiEnDehorsCadre(h))
-               startDoubleExplosion((e.posX+e.taille/2),(e.posY+e.taille/2));
-           }
-            //console.log(tableauObjetGraphiques);
+                    startDoubleExplosion((e.posX+e.taille/2),(e.posY+e.taille/2));
+                //Permet de calculer le score
+                addScore(25,e,player,h);
+            }
+            console.log(/*tableauObjetGraphiques*/score);
             return true;
         }
         else return false;
+    }
+
+    function addScore(valScore,ennemi,player,h) {
+        if(!ennemi.touched(player) && !ennemi.EnnemiEnDehorsCadre(h)){
+            score+=valScore;
+
+        }
+    }
+
+    function drawScore(ctx) {
+        ctx.save();
+        ctx.fillStyle = "black";
+        ctx.font="20px Georgia";
+        ctx.fillText(score,10,20,10);
+        ctx.restore();
     }
 
     function actionJeu(e,ctx) {
@@ -256,6 +274,7 @@ function GameFramework(){
         if(particles.length!=0){
             updateAndDrawParticules(1,ctx)
         }
+        drawScore(ctx);
     }
 
     function anime(timmeElapsed) {
