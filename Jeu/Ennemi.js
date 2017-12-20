@@ -36,12 +36,12 @@ class Ennemi {
         this.testCollisionZone(w,h);
 
         if (this instanceof EnnemiLeger){
-            this.retirerPvJoueurQuandEnnemiTouche(player,1);
+            this.retirerPvJoueurQuandEnnemiTouche(player,20);
             this.killEnnemiEtPvMoinsJoueur(h,player,10)
         }
         else if (this instanceof EnnemiLourd){
             this.followPlayer(player);
-            this.retirerPvJoueurQuandEnnemiTouche(player,2);
+            this.retirerPvJoueurQuandEnnemiTouche(player,50);
             this.killEnnemiEtPvMoinsJoueur(h,player,20)
 
         }

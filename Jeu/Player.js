@@ -120,7 +120,7 @@ class Player{
     }
 
     retirerPvJoueur(nbr){
-        this.pv-=nbr;
+        this.pv-=nbr/2;  //Bug boucle appelée deux fois donc pv moins doublés
     }
 
 }
@@ -157,7 +157,6 @@ class Atout{
         if(this.touched(player)){
             player.DispoAtout(this.nom);
             this.pv=0;
-            console.log("touché");
         }
 
     }

@@ -10,7 +10,10 @@
     font-style: normal;
 }
 
+h1{
+    font-family:"Badass","Impact";
 
+}
 
 #mainWindow{
 text-align: center;
@@ -23,7 +26,7 @@ text-align: center;
 #atouts{
     position: absolute;
     margin-top: 480px;
-    margin-right: 200px;
+
 }
 
 #atouts div{
@@ -79,12 +82,41 @@ text-align: center;
     width: 45px;
     height: 45px;
 }
+
+#son{
+    position: absolute;
+    margin-left: 10px;
+    background-color: black;
+    width: 50px;
+    height: 50px;
+    border: solid black;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#son img{
+    margin-top: 2px;
+    width: 45px;
+    height: 45px;
+}
+
 #divCanvas{
     margin-left: 65px;
 }
 #myCanvas{
+    position: relative;
     background: url(../ressources/background.jpg) no-repeat center center;
-    height: 600px;
+
+}
+
+#myCanvasMenuFin{
+    transition: 1s;
+    background-color: red;
+}
+
+.hidden{
+    transition: 1s;
+    display:none!important;
 }
 input:invalid {
     background-color: pink;
@@ -94,3 +126,28 @@ input:valid {
     background-color: lightgreen;
 }
 
+
+
+#theEnd{
+    position: absolute;
+    color:white!important;
+    width: 400px;
+    top: 80px!important;
+    font-family: "Badass", "Impact";
+}
+
+#theEnd h1{
+    font-size: 4rem;
+}
+#theEnd p{
+    font-size: 2rem;
+}
+#theEnd input{
+    background-color: transparent;
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    font-family:"Badass","Impact";
+    font-size: 3.25rem;
+    margin-top: 100px;
+}

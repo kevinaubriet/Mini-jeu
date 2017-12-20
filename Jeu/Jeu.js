@@ -1,7 +1,9 @@
 window.onload = init;
 var particles = [];
 
-
+/*
+*Sound fire dans fonction tir()
+ */
 
 /*Ajout de plein de trucs et amélioration de plein de truc mais je sais plus quoi :D
 *Et les particules pour modfier des props de ca appelle moi je t'explique
@@ -21,7 +23,7 @@ pluiseurs ennemis
 function init() {
     gf = new GameFramework();
     gf.init();
-    
+
 }
 
 function GameFramework(){
@@ -29,7 +31,7 @@ function GameFramework(){
     var score = 0;
     var inputStates = [];
     var tableauObjetGraphiques = [];
-    var delayMinBetweenBullets = 10;
+    var etatPause = false;
 
     function init() {
 
@@ -37,15 +39,16 @@ function GameFramework(){
         ctx = canvas.getContext("2d");
         w = canvas.width;
         h = canvas.height;
-        var available = true;
 
         creerJoueur();
-        creerAtout();
-        creerEnnemisLeger(4);
-        creerEnnemisLourd(1);
+        creationAleatoire();
+
+        //option Sonores
+        soundMusic();
+        //
 
 
-
+        //Test menu fin
 
 
         window.addEventListener('keydown', function(event) {
@@ -120,8 +123,14 @@ function GameFramework(){
                 }
             }else if(event.keyCode == 77){
                 player.ActiverAtout("invincible");
+
             }else if(event.keyCode == 76){
                 player.ActiverAtout("degat");
+
+            }else if (event.keyCode == 78){
+
+                etatPause = !etatPause;
+
             }
         }, false);
 
@@ -130,20 +139,13 @@ function GameFramework(){
 
     function creerJoueur(){
 
-        var x =100;
-        var y = 100;//h - 50;
-        var pv=100;
-        var v = 5;                //Pour changer la vitesse en fonction du niveau ajouter les modif de cette variable dans le constructeur
+        let x =w/2-10;
+        let y = h*0.8;
+        let pv=100;
+        let v = 5;                //Pour changer la vitesse en fonction du niveau ajouter les modif de cette variable dans le constructeur
 
-        //console.log(w+"  "+h+" monContext " + ctx +" monThis " +this );
-
-        var p1 = new Player(x, y, v,pv);
+        let p1 = new Player(x, y, v,pv);
         p1.ActiverArme("fusil_normal");
-        //p1.ActiverArme("fusil_sniper");
-        //p1.DispoAtout("invincible");
-        //p1.ActiverAtout("invincible");
-        //console.log(p1.getArmeActive());
-
         player=p1;
         tableauObjetGraphiques.push(p1);
     }
@@ -152,9 +154,42 @@ function GameFramework(){
         //ajouter hasard dans la création : ou invincible ou degat / hasard de position
         let x = w * Math.random();
         let y = h * Math.random();
-        var e = new Atout("degat",x,y);
+        let random = Math.floor(Math.random() * 2);
+
+        if(random == 0){
+            var s = "invincible";
+        }else var s = "degat";
+
+        let e = new Atout(s,x,y);
 
         tableauObjetGraphiques.push(e);
+    }
+
+    function creationAleatoire() {
+        multTemps=1;
+
+        setInterval(function () {
+            multTemps-=0.5;
+        },5000)
+
+        intervalA = setInterval(function() {
+            if((player.pv > 0) && (!etatPause) ){
+                creerAtout();
+            }
+        }, 15000);
+
+        intervalELeger = setInterval(function() {
+            if((player.pv > 0) && (!etatPause)){
+                creerEnnemisLeger(1);
+            }
+        }, 3000*multTemps);
+
+
+        intervalELourd = setInterval(function() {
+            if((player.pv > 0) && (!etatPause)){
+                creerEnnemisLourd(1);
+            }
+        }, 8000*multTemps);
     }
 
     function creerEnnemisLeger(n){
@@ -164,15 +199,18 @@ function GameFramework(){
             let taille=15;
             let x = w * Math.random();
             let y = 0-taille;
-            let vitesse=1;
+
+            min=1;
+            max=2;
+            let vitesse=(Math.random()*(max-min))+min;;
+
             let pv=50;
             let r = Math.round(255 * Math.random());
             let g = Math.round(255 * Math.random());
             let b = Math.round(255 * Math.random());
             let couleur = "rgb(" + r + "," + g + "," + b + ")";
             let vx = 0 * Math.random();
-            min=3;
-            max=6;
+
             //let vy = (Math.random()*(max-min))+min;
             //let vy = 5 * Math.random();
             let rayon = 10+60*Math.random();
@@ -232,6 +270,8 @@ function GameFramework(){
     function tir(time) {
         var tempEcoule=0;
 
+        document.querySelector("#soundFire").play();
+
         var armeCourante = player.getArmeActive();
 
         if(armeCourante instanceof FusilNormal){
@@ -263,13 +303,15 @@ function GameFramework(){
         if(e.pv<=0){
 
             tableauObjetGraphiques.splice(tableauObjetGraphiques.indexOf(e),1);
+            if(e instanceof Player){
+                youFail();
+            }
             if(e instanceof Ennemi){
                 if(!e.EnnemiEnDehorsCadre(h))
                     startDoubleExplosion((e.posX+e.taille/2),(e.posY+e.taille/2));
                 //Permet de calculer le score
                 addScore(25,e,player,h);
             }
-            //console.log(/*tableauObjetGraphiques*/score);
             return true;
         }
         else return false;
@@ -303,6 +345,8 @@ function GameFramework(){
     function anime(timmeElapsed) {
         ctx.clearRect(0, 0, w, h);
 
+        if(!etatPause){
+
         tableauObjetGraphiques.forEach(function (e) {  //e pour element du tableau
 
             actionJeu(e,ctx);
@@ -324,14 +368,9 @@ function GameFramework(){
 
 
         });
-
-        //console.log(tableauObjetGraphiques[1]);
-
-        //console.log(player.multDegat);
-        /*
-        console.log("degat " + player.atouts[1].dispo);
-        console.log("invincible " + player.atouts[0].dispo);
-        */
+        }else{
+            console.log("pause");
+        }
 
         requestAnimationFrame(anime);
     }
@@ -392,6 +431,38 @@ function GameFramework(){
         }
     }
 
+    function soundMusic() {
+        var player=document.querySelector("#audioPlayer");
+        var sonImg=document.querySelector("#sonImg");
+
+        document.querySelector("#son").addEventListener('click',function (e) {
+            if(sonImg.src.includes("sOn.png")){
+                sonImg.src="../ressources/sOff.png";
+                player.pause();
+            }
+            else {
+                sonImg.src = "../ressources/sOn.png";
+                player.play();
+            }
+
+        });
+        }
+
+
+    function youFail() {
+
+        {
+           // if (player.pv <= 0) {
+                document.querySelector("#armes").className = "hidden";
+                document.querySelector("#atouts").className = "hidden";
+                document.querySelector("#son").className = "hidden";
+                document.querySelector("#Score").innerText="Score: "+score;
+                document.querySelector("#theEnd").className = "";
+                tableauObjetGraphiques = [];
+                particles=[];
+           // }
+        }
+    }
     return {
         init:init,
         /*creerJoueur:creerJoueur,
