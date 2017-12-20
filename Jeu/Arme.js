@@ -11,7 +11,7 @@ class FusilNormal extends Arme{
         super();
         this.nom = "fusil_normal";
         this.projectile = new Projectile("carrée",4,"vert",3);
-        this.cadence = 5;
+        this.cadence = 100;
     }
 }
 
@@ -20,7 +20,7 @@ class FusilPompe extends Arme{
         super();
         this.nom = "fusil_pompe";
         this.projectile = new Projectile("carrée",4,"rouge",3);
-        this.cadence = 2;
+        this.cadence = 500;
     }
 }
 
@@ -29,7 +29,7 @@ class FusilSniper extends Arme{
         super();
         this.nom = "fusil_sniper";
         this.projectile = new Projectile("carrée",10,"vert",3);
-        this.cadence = 1;
+        this.cadence = 1000;
     }
 }
 

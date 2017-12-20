@@ -74,7 +74,8 @@ class Player{
     DispoAtout(atout){
         for(var i=0; i<this.atouts.length;i++){
             if(atout == this.atouts[i].nom){
-                this.atouts[i].dispo =true;
+                this.atouts[i].dispo = true;
+                console.log(this.atouts[i]);
             }
         }
     }
@@ -139,7 +140,12 @@ class Atout{
     draw(ctx){
         ctx.save();
 
-        ctx.fillStyle="red";
+        if(this.nom == "invincible"){
+            ctx.fillStyle="yellow";
+        }
+        else if(this.nom == "degat"){
+            ctx.fillStyle="red";
+        }
         ctx.fillRect(this.posX,this.posY,10, 10);
 
 

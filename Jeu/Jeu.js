@@ -21,7 +21,7 @@ pluiseurs ennemis
 function init() {
     gf = new GameFramework();
     gf.init();
-    console.log(gf.getTableauObjetsGraphiques());
+    
 }
 
 function GameFramework(){
@@ -29,6 +29,7 @@ function GameFramework(){
     var score = 0;
     var inputStates = [];
     var tableauObjetGraphiques = [];
+    var delayMinBetweenBullets = 10;
 
     function init() {
 
@@ -39,9 +40,10 @@ function GameFramework(){
         var available = true;
 
         creerJoueur();
+        creerAtout();
         creerEnnemisLeger(4);
         creerEnnemisLourd(1);
-        creerAtout();
+
 
 
 
@@ -65,7 +67,8 @@ function GameFramework(){
 
             } else if (event.keyCode === 32) {
                 inputStates.space = true;
-                creerProjectile();
+                //creerProjectile();
+                tir(Date.now());
             }
         }, false);
 
@@ -147,7 +150,10 @@ function GameFramework(){
 
     function creerAtout(){
         //ajouter hasard dans la création : ou invincible ou degat / hasard de position
-        var e = new Atout("invincible",100,200);
+        let x = w * Math.random();
+        let y = h * Math.random();
+        var e = new Atout("degat",x,y);
+
         tableauObjetGraphiques.push(e);
     }
 
@@ -205,20 +211,6 @@ function GameFramework(){
         }
     }
 
-    function tir(available) {
-
-        if(available == true){
-            creerProjectile();
-            available = false;
-        }else{
-            window.setTimeout(function () {
-                available= true
-            },3000);
-        }
-        console.log("rentre");
-
-    }
-
     function creerProjectile(){
         //forme,degat,vitesse,posX,posY,couleur,taille
 
@@ -234,6 +226,35 @@ function GameFramework(){
             var projectile=new Projectile("carrée",50*player.multDegat,1.5,player.posX+player.width/2,player.posY,"blue",1);
         }
         tableauObjetGraphiques.push(projectile);
+
+    }
+    
+    function tir(time) {
+        var tempEcoule=0;
+
+        var armeCourante = player.getArmeActive();
+
+        if(armeCourante instanceof FusilNormal){
+            var projectile=new Projectile("carrée",25*player.multDegat,3,player.posX+player.width/2,player.posY,"red",1);
+
+        }else if(armeCourante instanceof FusilSniper){
+            var projectile=new Projectile("carrée",100*player.multDegat,10,player.posX+player.width/2,player.posY,"white",1);
+
+        }else if(armeCourante instanceof FusilPompe){
+            var projectile=new Projectile("carrée",50*player.multDegat,1.5,player.posX+player.width/2,player.posY,"blue",1);
+        }
+
+        if(this.lastBulletTime !== undefined) {
+            tempEcoule = time - this.lastBulletTime;
+            //console.log("temps écoulé = " + tempEcoule);
+        }
+
+        if((this.lastBulletTime === undefined) || (tempEcoule> armeCourante.cadence)) {
+            //var projectile=new Projectile("carrée",50*player.multDegat,1.5,player.posX+player.width/2,player.posY,"blue",1);
+            tableauObjetGraphiques.push(projectile);
+            // on mémorise le dernier temps.
+            this.lastBulletTime = time;
+        }
 
     }
 
@@ -304,7 +325,14 @@ function GameFramework(){
 
         });
 
+        //console.log(tableauObjetGraphiques[1]);
+
         //console.log(player.multDegat);
+        /*
+        console.log("degat " + player.atouts[1].dispo);
+        console.log("invincible " + player.atouts[0].dispo);
+        */
+
         requestAnimationFrame(anime);
     }
 
