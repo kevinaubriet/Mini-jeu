@@ -202,21 +202,13 @@ function GameFramework(){
 
             min=1;
             max=2;
-            let vitesse=(Math.random()*(max-min))+min;;
-
-            let pv=50;
-            let r = Math.round(255 * Math.random());
-            let g = Math.round(255 * Math.random());
-            let b = Math.round(255 * Math.random());
-            let couleur = "rgb(" + r + "," + g + "," + b + ")";
+            let vitesse=(Math.random()*(max-min))+min;
             let vx = 0 * Math.random();
 
-            //let vy = (Math.random()*(max-min))+min;
-            //let vy = 5 * Math.random();
             let rayon = 10+60*Math.random();
 
 
-            var e = new EnnemiLeger(x,y,"s",taille,vitesse,pv);
+            var e = new EnnemiLeger(x,y,"s",taille,vitesse);
 
             tableauObjetGraphiques.push(e);
         }
@@ -230,11 +222,6 @@ function GameFramework(){
             let x = w * Math.random();
             let y = 0-taille;
             let vitesse=1;
-            let pv=100;
-            let r = Math.round(255 * Math.random());
-            let g = Math.round(255 * Math.random());
-            let b = Math.round(255 * Math.random());
-            let couleur = "rgb(" + r + "," + g + "," + b + ")";
             min=3;
             max=6;
             //let vy = (Math.random()*(max-min))+min;
@@ -242,7 +229,7 @@ function GameFramework(){
             let rayon = 10+60*Math.random();
 
 
-            var e = new EnnemiLourd(x,y,"l",taille,vitesse,pv);
+            var e = new EnnemiLourd(x,y,"l",taille,vitesse);
 
             tableauObjetGraphiques.push(e);
 
@@ -275,26 +262,39 @@ function GameFramework(){
         var armeCourante = player.getArmeActive();
 
         if(armeCourante instanceof FusilNormal){
-            var projectile=new Projectile("carrée",25*player.multDegat,3,player.posX+player.width/2,player.posY,"red",1);
+            var projectile=new Projectile("carrée",25*player.multDegat,3,0,player.posX+player.width/2,player.posY,"red",armeCourante.nom);
 
         }else if(armeCourante instanceof FusilSniper){
-            var projectile=new Projectile("carrée",100*player.multDegat,10,player.posX+player.width/2,player.posY,"white",1);
+            var projectile=new Projectile("carrée",100*player.multDegat,10,0,player.posX+player.width/2,player.posY,"white",armeCourante.nom);
 
         }else if(armeCourante instanceof FusilPompe){
-            var projectile=new Projectile("carrée",50*player.multDegat,1.5,player.posX+player.width/2,player.posY,"blue",1);
+            var cone = 0.25;
+            var p1 = new Projectile("carrée",50*player.multDegat,7,0,player.posX+player.width/2,player.posY,"blue",armeCourante.nom);
+            var p2 = new Projectile("carrée",50*player.multDegat,7,cone,(player.posX+player.width/2),player.posY,"blue",1);
+            var p3 = new Projectile("carrée",50*player.multDegat,7,-cone,(player.posX+player.width/2),player.posY,"blue",1);
+            var p4 = new Projectile("carrée",50*player.multDegat,7,cone*2,(player.posX+player.width/2),player.posY,"blue",1);
+            var p5 = new Projectile("carrée",50*player.multDegat,7,-cone*2,(player.posX+player.width/2),player.posY,"blue",1);
         }
 
         if(this.lastBulletTime !== undefined) {
             tempEcoule = time - this.lastBulletTime;
-            //console.log("temps écoulé = " + tempEcoule);
         }
 
         if((this.lastBulletTime === undefined) || (tempEcoule> armeCourante.cadence)) {
-            //var projectile=new Projectile("carrée",50*player.multDegat,1.5,player.posX+player.width/2,player.posY,"blue",1);
-            tableauObjetGraphiques.push(projectile);
+            if(armeCourante instanceof FusilPompe){
+                tableauObjetGraphiques.push(p1);
+                tableauObjetGraphiques.push(p2);
+                tableauObjetGraphiques.push(p3);
+                tableauObjetGraphiques.push(p4);
+                tableauObjetGraphiques.push(p5);
+            }else{
+                tableauObjetGraphiques.push(projectile);
+            }
+
             // on mémorise le dernier temps.
             this.lastBulletTime = time;
         }
+
 
     }
 
@@ -327,8 +327,8 @@ function GameFramework(){
     function drawScore(ctx) {
         ctx.save();
         ctx.fillStyle = "white";
-        ctx.font="20px Georgia";
-        ctx.fillText(score,10,20,10);
+        ctx.font="20px Badass";
+        ctx.fillText(score,10,20,50);
         ctx.restore();
     }
 
@@ -369,7 +369,7 @@ function GameFramework(){
 
         });
         }else{
-            console.log("pause");
+            //console.log("pause");
         }
 
         requestAnimationFrame(anime);

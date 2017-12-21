@@ -6,6 +6,7 @@ class Ennemi {
         this.vitesseX=this.randomVitesseX(2);
         this.vitesseY=vitesse;
         this.pv=pv;
+        this.degat = degat;
         this.typeE = typeE;
         this.taille=taille;
 
@@ -36,13 +37,13 @@ class Ennemi {
         this.testCollisionZone(w,h);
 
         if (this instanceof EnnemiLeger){
-            this.retirerPvJoueurQuandEnnemiTouche(player,20);
-            this.killEnnemiEtPvMoinsJoueur(h,player,10)
+            this.retirerPvJoueurQuandEnnemiTouche(player);
+            this.killEnnemiEtPvMoinsJoueur(h,player)
         }
         else if (this instanceof EnnemiLourd){
             this.followPlayer(player);
-            this.retirerPvJoueurQuandEnnemiTouche(player,50);
-            this.killEnnemiEtPvMoinsJoueur(h,player,20)
+            this.retirerPvJoueurQuandEnnemiTouche(player);
+            this.killEnnemiEtPvMoinsJoueur(h,player)
 
         }
     }
@@ -86,11 +87,11 @@ class Ennemi {
         return false;
     }
 
-    retirerPvJoueurQuandEnnemiTouche(player,nbr){
+    retirerPvJoueurQuandEnnemiTouche(player){
         if(this.touched(player)) {
             this.pv=0;
             if(!player.invincible){
-                player.retirerPvJoueur(nbr);
+                player.retirerPvJoueur(this.degat/2);
             }
         }
     }
@@ -108,11 +109,11 @@ class Ennemi {
     * et effectue une action de verification de zone que ne fais pas
     * testColissionZone
      */
-    killEnnemiEtPvMoinsJoueur(h,player,nbr){
+    killEnnemiEtPvMoinsJoueur(h,player){
         if (this.EnnemiEnDehorsCadre(h)) {
             this.pv = 0;
             if(!player.invincible){
-                player.retirerPvJoueur(nbr);
+                player.retirerPvJoueur(this.degat);
             }
         }
     }
@@ -126,16 +127,16 @@ class Ennemi {
 }
 
 class EnnemiLeger extends Ennemi{
-    constructor(posX, posY,typeE,taille,vitesse,pv){
-        super(posX, posY,typeE,taille,vitesse,pv, 20, 10, 15);
+    constructor(posX, posY,typeE,taille,vitesse){
+        super(posX, posY,typeE,taille,vitesse,50, 20);
     }
 
 
 }
 
 class EnnemiLourd extends Ennemi{
-    constructor(posX, posY,typeE,taille,vitesse,pv){
-        super(posX, posY,typeE,taille,vitesse/1.5,pv,50,5,30);    //vitesse 50% fois plus lente que leger
+    constructor(posX, posY,typeE,taille,vitesse){
+        super(posX, posY,typeE,taille,vitesse/1.5,100,40);    //vitesse 50% fois plus lente que leger
     }
 
     followPlayer(player){

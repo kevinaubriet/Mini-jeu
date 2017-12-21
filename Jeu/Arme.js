@@ -20,7 +20,7 @@ class FusilPompe extends Arme{
         super();
         this.nom = "fusil_pompe";
         this.projectile = new Projectile("carrée",4,"rouge",3);
-        this.cadence = 500;
+        this.cadence = 800;
     }
 }
 
@@ -34,15 +34,16 @@ class FusilSniper extends Arme{
 }
 
 class Projectile{
-    constructor(forme,degat,vitesse,posX,posY,couleur,taille){
+    constructor(forme,degat,vitesse,vitesseX,posX,posY,couleur,typeArme){
         this.posX=posX;
         this.posY=posY;
         this.vitesse=vitesse;
-        this.forme = forme;
+        this.vitesseX = vitesseX;
         this.degat = degat;
         this.taille=4;//taille;
         this.pv=1;
         this.couleur = couleur;
+        this.typeArme = typeArme;
     }
 
 
@@ -54,6 +55,7 @@ class Projectile{
     }
     move() {
         this.posY -= this.vitesse;
+        this.posX += this.vitesseX;
     }
 
 
@@ -98,7 +100,9 @@ class Projectile{
     degatEnnemi(ennemi,nbr){
         if(this.touched(ennemi)){
             ennemi.retirerPvEnnemi(nbr);
-            this.killProjectile();
+            if(this.typeArme !== "fusil_sniper"){
+                this.killProjectile();
+            }
         }
     }
 }

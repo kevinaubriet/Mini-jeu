@@ -140,10 +140,10 @@ class Atout{
     draw(ctx){
         ctx.save();
 
-        if(this.nom == "invincible"){
+        if(this.nom === "invincible"){
             ctx.fillStyle="yellow";
         }
-        else if(this.nom == "degat"){
+        else if(this.nom === "degat"){
             ctx.fillStyle="red";
         }
         ctx.fillRect(this.posX,this.posY,10, 10);
