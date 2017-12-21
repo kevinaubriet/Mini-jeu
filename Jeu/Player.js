@@ -13,6 +13,8 @@ class Player{
         this.atouts = new Array(new Atout("invincible"),new Atout("degat"));
         this.multDegat = 1;
         this.invincible = false;
+        this.img=new Image();
+        this.img.src='../ressources/spaceShipPlayer.png';
     }
 
     getArmeActive(){
@@ -49,7 +51,7 @@ class Player{
                         joueur.atouts[1].activate = false;
                     },joueur.atouts[i].time);// TEMPS DE L'ACTION = 5s
 
-                    console.log("degattttt activé");
+                    //console.log("degattttt activé");
                     this.atouts[i].dispo = false;
                 }
                 else if(atout == "invincible"){
@@ -61,7 +63,7 @@ class Player{
                         joueur.atouts[0].activate = false;
                     },joueur.atouts[i].time);// TEMPS DE L'ACTION = 5s
 
-                    console.log("inviiincible activé");
+                    //console.log("inviiincible activé");
                     this.atouts[i].dispo = false;
                 }
 
@@ -88,10 +90,12 @@ class Player{
 
     draw(ctx) {
         ctx.save();
+        /*ctx.fillStyle = "white";
+        ctx.fillRect(this.posX, this.posY, this.width, this.height);*/
+        ctx.drawImage(this.img,this.posX-5 ,this.posY-7);
         ctx.fillStyle = "white";
-        ctx.fillRect(this.posX, this.posY, this.width, this.height);
-        ctx.fillStyle = "black";
-        ctx.fillText(this.pv,this.posX,this.posY+this.height/2,this.height);
+        if(this.pv==100)ctx.fillText(this.pv,this.posX+1,this.posY+40,this.height);
+        if(this.pv<100)ctx.fillText(this.pv,this.posX+5,this.posY+40,this.height);
         ctx.restore();
     }
 

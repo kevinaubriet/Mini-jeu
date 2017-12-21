@@ -9,15 +9,19 @@ class Ennemi {
         this.degat = degat;
         this.typeE = typeE;
         this.taille=taille;
+        this.img=new Image();
 
     }
 
     draw(ctx) {
         ctx.save();
-        ctx.fillStyle = "grey";
-        ctx.fillRect(this.posX, this.posY, this.taille, this.taille);
+
+        /*ctx.fillStyle = "grey";
+        ctx.fillRect(this.posX, this.posY, this.taille, this.taille);*/
+
+        ctx.drawImage(this.img,this.posX,this.posY);
         ctx.fillStyle = "white";
-        ctx.fillText(this.pv,this.posX,this.posY+this.taille/2,this.taille);
+        ctx.fillText(this.pv,(this.posX+this.taille/6),(this.posY-this.taille/4),this.taille);
         ctx.restore();
     }
 
@@ -129,6 +133,7 @@ class Ennemi {
 class EnnemiLeger extends Ennemi{
     constructor(posX, posY,typeE,taille,vitesse){
         super(posX, posY,typeE,taille,vitesse,50, 20);
+        this.img.src='../ressources/spaceShipEnnemiLeger.png';
     }
 
 
@@ -137,6 +142,7 @@ class EnnemiLeger extends Ennemi{
 class EnnemiLourd extends Ennemi{
     constructor(posX, posY,typeE,taille,vitesse){
         super(posX, posY,typeE,taille,vitesse/1.5,100,40);    //vitesse 50% fois plus lente que leger
+        this.img.src='../ressources/spaceShipEnnemiLourd.png';
     }
 
     followPlayer(player){

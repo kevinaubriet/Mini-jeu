@@ -16,7 +16,7 @@ h1{
 }
 
 #mainWindow{
-text-align: center;
+    text-align: center;
 }
 #mainWindow >div{
     display: inline-block;
@@ -40,11 +40,11 @@ text-align: center;
 }
 
 #atouts div img{
-     margin-top: 1px;
-     width: 45px;
-     height: 45px;
+    margin-top: 1px;
+    width: 45px;
+    height: 45px;
     display: block;
- }
+}
 
 #atouts div h2{
     color: white;
@@ -128,7 +128,7 @@ input:valid {
 
 
 
-#theEnd{
+#theMenu{
     position: absolute;
     color:white!important;
     width: 400px;
@@ -136,13 +136,13 @@ input:valid {
     font-family: "Badass", "Impact";
 }
 
-#theEnd h1{
+#theMenu h1{
     font-size: 4rem;
 }
-#theEnd p{
+#theMenu p{
     font-size: 2rem;
 }
-#theEnd input{
+#theMenu input{
     background-color: transparent;
     color: white;
     border-radius: 10px;

@@ -327,8 +327,8 @@ function GameFramework(){
     function drawScore(ctx) {
         ctx.save();
         ctx.fillStyle = "white";
-        ctx.font="20px Badass";
-        ctx.fillText(score,10,20,50);
+        ctx.font="20px Georgia";
+        ctx.fillText(score,10,20,10);
         ctx.restore();
     }
 
@@ -369,6 +369,7 @@ function GameFramework(){
 
         });
         }else{
+            youPause();
             //console.log("pause");
         }
 
@@ -446,23 +447,65 @@ function GameFramework(){
             }
 
         });
-        }
+    }
 
 
     function youFail() {
 
-        {
-           // if (player.pv <= 0) {
-                document.querySelector("#armes").className = "hidden";
-                document.querySelector("#atouts").className = "hidden";
-                document.querySelector("#son").className = "hidden";
-                document.querySelector("#Score").innerText="Score: "+score;
-                document.querySelector("#theEnd").className = "";
-                tableauObjetGraphiques = [];
-                particles=[];
-           // }
+
+        etatPause=true;
+        document.querySelector("#armes").className = "hidden";
+        document.querySelector("#atouts").className = "hidden";
+        document.querySelector("#son").className = "hidden";
+
+        tableauObjetGraphiques = [];
+        particles=[];
+
+        var menu=document.querySelector("#theMenu");
+        var h1= document.createElement("h1");
+        var p= document.createElement("p");
+        var input= document.createElement("input");
+
+        h1.innerText="You Lose !";
+        h1.id="youLose";
+        p.innerText="Score : "+score;
+        p.id="Score";
+        input.type="submit";
+        input.value="Retry";
+        input.id="bRetry";
+        input.addEventListener("click",function () {
+            window.location.reload(false);
+        });
+
+
+        menu.appendChild(h1);
+        menu.appendChild(p);
+        menu.appendChild(input);
+
+        menu.className="";
+
+    }
+
+    function youPause() {
+        if(etatPause=true && player.pv>0) {
+
+            ctx.fillStyle = "white";
+            ctx.font="90px Badass"
+            ctx.fillText("Resume",w/8,h/5);
+
+            ctx.fillStyle = "white";
+            ctx.font="40px Badass";
+            ctx.fillText("Score : " + score,w/4,h/2.30);
+
+            ctx.fillStyle = "white";
+            ctx.font="30px Badass";
+            ctx.fillText("Press N to resume",w/4.5,h/1.1);
+
+            //remet les caracteres par defaut
+            ctx.font="10px Times";
         }
     }
+
     return {
         init:init,
         /*creerJoueur:creerJoueur,
