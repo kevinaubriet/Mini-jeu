@@ -26,7 +26,7 @@ class Ennemi {
     }
 
     randomVitesseX(ratioVitesse) {
-        var signe = Math.random();
+        let signe = Math.random();
         if (signe < 0.5) {
             return -ratioVitesse * Math.random();
         }
@@ -85,10 +85,8 @@ class Ennemi {
     followPlayer(player){} //utilisée que pour l'ennemi lourd
 
     touched(player) {
-        if (((this.posX <= player.posX && (player.posX <= (this.posX + this.taille)) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX + this.taille))) && ((this.posY <= player.posY && (player.posY <= (this.posY + this.taille)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY + this.taille)))) {
-            return true;
-        }
-        return false;
+        return ((this.posX <= player.posX && (player.posX <= (this.posX + this.taille)) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX + this.taille))) && ((this.posY <= player.posY && (player.posY <= (this.posY + this.taille)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY + this.taille)));
+
     }
 
     retirerPvJoueurQuandEnnemiTouche(player){
@@ -122,10 +120,7 @@ class Ennemi {
         }
     }
     EnnemiEnDehorsCadre(h){
-        if((this.posY)>h){
-            return true
-        }
-        else return false;
+        return (this.posY) > h;
     }
 
 }

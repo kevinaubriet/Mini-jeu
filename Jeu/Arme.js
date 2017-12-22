@@ -71,7 +71,7 @@ class Projectile{
         this.move(ctx);
         this.testCollisionZone(ctx);
 
-        var self=this;       //SALE MAMENE UNE SOLUTION?
+        let self = this;       //SALE MAMENE UNE SOLUTION?
         tableauObjetGraphiques.forEach(function (e) {
             if (e instanceof Ennemi){
                 self.degatEnnemi(e,self.degat);
@@ -80,10 +80,8 @@ class Projectile{
     }
 
     touched(e) {
-        if (((this.posX <= e.posX && (e.posX <= (this.posX + this.taille)) || (e.posX + e.taille) >= this.posX && e.posX <= (this.posX + this.taille))) && ((this.posY <= e.posY && (e.posY <= (this.posY + this.taille)) || (e.posY + e.taille) >= this.posY && e.posY <= (this.posY + this.taille)))) {
-            return true;
-        }
-        return false;
+        return ((this.posX <= e.posX && (e.posX <= (this.posX + this.taille)) || (e.posX + e.taille) >= this.posX && e.posX <= (this.posX + this.taille))) && ((this.posY <= e.posY && (e.posY <= (this.posY + this.taille)) || (e.posY + e.taille) >= this.posY && e.posY <= (this.posY + this.taille)));
+
     }
 
     killProjectile(){

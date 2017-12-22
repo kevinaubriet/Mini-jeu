@@ -9,8 +9,8 @@ class Player{
         this.vitesseX=0;
         this.vitesseY=0;
         this.pv = pv;
-        this.armes = new Array(new FusilNormal(),new FusilPompe(),new FusilSniper());
-        this.atouts = new Array(new Atout("invincible"),new Atout("degat"));
+        this.armes = [new FusilNormal(),new FusilPompe(),new FusilSniper()];
+        this.atouts = [new Atout("invincible"),new Atout("degat")];
         this.multDegat = 1;
         this.invincible = false;
         this.img=new Image();
@@ -18,31 +18,31 @@ class Player{
     }
 
     getArmeActive(){
-        for(var i =0; i< this.armes.length;i++){
-            if(this.armes[i].activate == true){
+        for(let i =0; i< this.armes.length; i++){
+            if(this.armes[i].activate === true){
                 return this.armes[i];
             }
         }
     }
 
     ActiverArme(arme){
-        for(var i =0; i<this.armes.length;i++){
-            if(this.armes[i].activate==true)
+        for(let i =0; i<this.armes.length; i++){
+            if(this.armes[i].activate===true)
                 this.armes[i].activate = false;
-            else if(this.armes[i].nom == arme){
+            else if(this.armes[i].nom === arme){
                 this.armes[i].activate = true;
             }
         }
     }
 
     ActiverAtout(atout){
-        for(var i = 0;i<this.atouts.length;i++){
-            if(this.atouts[i].dispo == false && this.atouts[i].nom == atout){
+        for(let i = 0; i<this.atouts.length; i++){
+            if(this.atouts[i].dispo === false && this.atouts[i].nom === atout){
                 console.log("atout "+this.atouts[i].nom +" pas dispo");
             }
-            else if(this.atouts[i].dispo == true && this.atouts[i].nom == atout){
+            else if(this.atouts[i].dispo === true && this.atouts[i].nom === atout){
 
-                if(atout == "degat"){
+                if(atout === "degat"){
                     let joueur =this; //SALE MAMENE
                     this.atouts[i].activate = true;
                     this.multDegat = 2;
@@ -54,7 +54,7 @@ class Player{
                     //console.log("degattttt activé");
                     this.atouts[i].dispo = false;
                 }
-                else if(atout == "invincible"){
+                else if(atout === "invincible"){
                     let joueur =this;//SALE MAMENE
                     this.atouts[i].activate = true;
                     this.invincible = true;
@@ -74,8 +74,8 @@ class Player{
     }
 
     DispoAtout(atout){
-        for(var i=0; i<this.atouts.length;i++){
-            if(atout == this.atouts[i].nom){
+        for(let i=0; i<this.atouts.length; i++){
+            if(atout === this.atouts[i].nom){
                 this.atouts[i].dispo = true;
                 console.log(this.atouts[i]);
             }
@@ -92,11 +92,45 @@ class Player{
         ctx.save();
         /*ctx.fillStyle = "white";
         ctx.fillRect(this.posX, this.posY, this.width, this.height);*/
+
         ctx.drawImage(this.img,this.posX-5 ,this.posY-7);
-        ctx.fillStyle = "white";
-        if(this.pv==100)ctx.fillText(this.pv,this.posX+1,this.posY+40,this.height);
+
+        let couleur = "white";
+        ctx.fillStyle = couleur;
+        if(this.pv===100)ctx.fillText(this.pv,this.posX+1,this.posY+40,this.height);
         if(this.pv<100)ctx.fillText(this.pv,this.posX+5,this.posY+40,this.height);
+
+        if(this.atouts[0].activate && !this.atouts[1].activate){
+            couleur = "yellow";
+            this.aura(ctx,couleur,30);
+
+        }else if(this.atouts[1].activate && !this.atouts[0].activate){
+            couleur = "red";
+            this.aura(ctx,couleur,30);
+
+        }else if (this.atouts[0].activate && this.atouts[1].activate){
+            couleur = "yellow";
+            this.aura(ctx,couleur,30);
+            couleur = "red";
+            this.aura(ctx,couleur,40);
+
+        }
+
         ctx.restore();
+    }
+
+    aura(ctx, couleur,taille)
+    {
+        let posx =this.posX+(this.width/2);
+        let posy =this.posY+(this.height/2);
+
+        ctx.beginPath();
+        ctx.lineWidth="10";
+        ctx.globalAlpha = 0.4;
+        ctx.strokeStyle = couleur;
+        ctx.arc(posx, posy, taille, 0, 2 * Math.PI);
+        ctx.stroke();
+
     }
 
     move() {
@@ -165,13 +199,9 @@ class Atout{
 
     }
 
-
-
     touched(player) {
-        if (((this.posX <= player.posX && (player.posX <= (this.posX+10)) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX+10))) && ((this.posY <= player.posY && (player.posY <= (this.posY+10)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY+10)))) {
-            return true;
-        }
-        return false;
+        return ((this.posX <= player.posX && (player.posX <= (this.posX + 10)) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX + 10))) && ((this.posY <= player.posY && (player.posY <= (this.posY + 10)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY + 10)));
+
     }
 
 }

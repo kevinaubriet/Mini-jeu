@@ -70,8 +70,9 @@ function GameFramework(){
 
             } else if (event.keyCode === 32) {
                 inputStates.space = true;
-                //creerProjectile();
-                tir(Date.now());
+                if((player.pv > 0) && (!etatPause)){
+                    tir(Date.now());
+                }
             }
         }, false);
 
@@ -100,34 +101,45 @@ function GameFramework(){
 
         window.addEventListener('keydown', function(event) {
 
-            if(event.keyCode == 73){
-                if(player.getArmeActive().nom != "fusil_normal"){
-                    player.ActiverArme("fusil_normal");
-                }
-                else {
-                    console.log("arme déja active");
-                }
-
-            } else if(event.keyCode == 79){
-                if(player.getArmeActive().nom != "fusil_pompe"){
-                    player.ActiverArme("fusil_pompe");
-                }else{
-                    console.log("arme déja active");
+            if(event.keyCode === 73){
+                if((player.pv > 0) && (!etatPause)){
+                    if(player.getArmeActive().nom !== "fusil_normal"){
+                        player.ActiverArme("fusil_normal");
+                    }
+                    else {
+                        console.log("arme déja active");
+                    }
                 }
 
-            }else if(event.keyCode == 80){
-                if(player.getArmeActive().nom != "fusil_sniper"){
-                    player.ActiverArme("fusil_sniper");
-                }else{
-                    console.log("arme déja active");
+            } else if(event.keyCode === 79){
+                if((player.pv > 0) && (!etatPause)){
+                    if(player.getArmeActive().nom !== "fusil_pompe"){
+                        player.ActiverArme("fusil_pompe");
+                    }else{
+                        console.log("arme déja active");
+                    }
                 }
-            }else if(event.keyCode == 77){
-                player.ActiverAtout("invincible");
 
-            }else if(event.keyCode == 76){
-                player.ActiverAtout("degat");
+            }else if(event.keyCode === 80){
+                if((player.pv > 0) && (!etatPause)){
+                    if(player.getArmeActive().nom !== "fusil_sniper"){
+                        player.ActiverArme("fusil_sniper");
+                    }else{
+                        console.log("arme déja active");
+                    }
+                }
 
-            }else if (event.keyCode == 78){
+            }else if(event.keyCode === 77){
+                if((player.pv > 0) && (!etatPause)){
+                    player.ActiverAtout("invincible");
+                }
+
+            }else if(event.keyCode === 76){
+                if((player.pv > 0) && (!etatPause)){
+                    player.ActiverAtout("degat");
+                }
+
+            }else if (event.keyCode === 78){
 
                 etatPause = !etatPause;
 
@@ -151,14 +163,17 @@ function GameFramework(){
     }
 
     function creerAtout(){
-        //ajouter hasard dans la création : ou invincible ou degat / hasard de position
+        let s;
+//ajouter hasard dans la création : ou invincible ou degat / hasard de position
         let x = w * Math.random();
         let y = h * Math.random();
         let random = Math.floor(Math.random() * 2);
 
-        if(random == 0){
-            var s = "invincible";
-        }else var s = "degat";
+        if(random === 0){
+            s = "invincible";
+        }else {
+            s = "degat";
+        }
 
         let e = new Atout(s,x,y);
 
@@ -170,7 +185,7 @@ function GameFramework(){
 
         setInterval(function () {
             multTemps-=0.5;
-        },5000)
+        },5000);
 
         intervalA = setInterval(function() {
             if((player.pv > 0) && (!etatPause) ){
@@ -194,21 +209,17 @@ function GameFramework(){
 
     function creerEnnemisLeger(n){
 
-        for(var i = 0; i < n; i++) {
+        for(let i = 0; i < n; i++) {
 
             let taille=15;
-            let x = w * Math.random();
+            let x = (w-10) * Math.random();
             let y = 0-taille;
 
             min=1;
             max=2;
             let vitesse=(Math.random()*(max-min))+min;
-            let vx = 0 * Math.random();
 
-            let rayon = 10+60*Math.random();
-
-
-            var e = new EnnemiLeger(x,y,"s",taille,vitesse);
+            let e = new EnnemiLeger(x, y, "s", taille, vitesse);
 
             tableauObjetGraphiques.push(e);
         }
@@ -216,20 +227,14 @@ function GameFramework(){
 
     function creerEnnemisLourd(n){
 
-        for(var i = 0; i < n; i++) {
+        for(let i = 0; i < n; i++) {
 
             let taille=30;
             let x = w * Math.random();
             let y = 0-taille;
             let vitesse=1;
-            min=3;
-            max=6;
-            //let vy = (Math.random()*(max-min))+min;
-            //let vy = 5 * Math.random();
-            let rayon = 10+60*Math.random();
 
-
-            var e = new EnnemiLourd(x,y,"l",taille,vitesse);
+            let e = new EnnemiLourd(x, y, "l", taille, vitesse);
 
             tableauObjetGraphiques.push(e);
 
@@ -237,38 +242,40 @@ function GameFramework(){
     }
 
     function creerProjectile(){
-        //forme,degat,vitesse,posX,posY,couleur,taille
+        let projectile;
+//forme,degat,vitesse,posX,posY,couleur,taille
 
-        var armeCourante = player.getArmeActive();
+        let armeCourante = player.getArmeActive();
 
         if(armeCourante instanceof FusilNormal){
-            var projectile=new Projectile("carrée",25*player.multDegat,3,player.posX+player.width/2,player.posY,"red",1);
+            projectile = new Projectile("carrée",25*player.multDegat,3,player.posX+player.width/2,player.posY,"red",1);
 
         }else if(armeCourante instanceof FusilSniper){
-            var projectile=new Projectile("carrée",10*player.multDegat,10,player.posX+player.width/2,player.posY,"green",1);
+            projectile = new Projectile("carrée", 10 * player.multDegat, 10, player.posX + player.width / 2, player.posY, "green", 1);
 
         }else if(armeCourante instanceof FusilPompe){
-            var projectile=new Projectile("carrée",50*player.multDegat,1.5,player.posX+player.width/2,player.posY,"blue",1);
+            projectile = new Projectile("carrée",50*player.multDegat,1.5,player.posX+player.width/2,player.posY,"blue",1);
         }
         tableauObjetGraphiques.push(projectile);
 
     }
     
     function tir(time) {
-        var tempEcoule=0;
+        let projectile;
+        let tempEcoule = 0;
 
         document.querySelector("#soundFire").play();
 
-        var armeCourante = player.getArmeActive();
+        let armeCourante = player.getArmeActive();
 
         if(armeCourante instanceof FusilNormal){
-            var projectile=new Projectile("carrée",25*player.multDegat,3,0,player.posX+player.width/2,player.posY,"red",armeCourante.nom);
+            projectile = new Projectile("carrée",25*player.multDegat,3,0,player.posX+player.width/2,player.posY,"red",armeCourante.nom);
 
         }else if(armeCourante instanceof FusilSniper){
-            var projectile=new Projectile("carrée",100*player.multDegat,10,0,player.posX+player.width/2,player.posY,"white",armeCourante.nom);
+            projectile = new Projectile("carrée", 100 * player.multDegat, 10, 0, player.posX + player.width / 2, player.posY, "white", armeCourante.nom);
 
         }else if(armeCourante instanceof FusilPompe){
-            var cone = 0.25;
+            let cone = 0.25;
             var p1 = new Projectile("carrée",50*player.multDegat,7,0,player.posX+player.width/2,player.posY,"blue",armeCourante.nom);
             var p2 = new Projectile("carrée",50*player.multDegat,7,cone,(player.posX+player.width/2),player.posY,"blue",1);
             var p3 = new Projectile("carrée",50*player.multDegat,7,-cone,(player.posX+player.width/2),player.posY,"blue",1);
@@ -290,12 +297,9 @@ function GameFramework(){
             }else{
                 tableauObjetGraphiques.push(projectile);
             }
-
             // on mémorise le dernier temps.
             this.lastBulletTime = time;
         }
-
-
     }
 
 
@@ -327,14 +331,14 @@ function GameFramework(){
     function drawScore(ctx) {
         ctx.save();
         ctx.fillStyle = "white";
-        ctx.font="20px Georgia";
-        ctx.fillText(score,10,20,10);
+        ctx.font="30px Georgia";
+        ctx.fillText(score,10,30);
         ctx.restore();
     }
 
     function actionJeu(e,ctx) {
         killMe(e);
-        if(particles.length!=0){
+        if(particles.length!==0){
             updateAndDrawParticules(1,ctx)
         }
         drawScore(ctx);
@@ -382,7 +386,7 @@ function GameFramework(){
     }
 
     function affichageArme(){
-        var armeActive = player.getArmeActive().nom;
+        let armeActive = player.getArmeActive().nom;
 
 
         //met tous les couleur des indicateurs de selection d'arme en noir
@@ -395,7 +399,7 @@ function GameFramework(){
     }
 
     function affichageAtout() {
-        var atouts = player.atouts;
+        let atouts = player.atouts;
 
         for(let i=0;i<atouts.length;i++){
 
@@ -433,8 +437,8 @@ function GameFramework(){
     }
 
     function soundMusic() {
-        var player=document.querySelector("#audioPlayer");
-        var sonImg=document.querySelector("#sonImg");
+        let player = document.querySelector("#audioPlayer");
+        let sonImg = document.querySelector("#sonImg");
 
         document.querySelector("#son").addEventListener('click',function (e) {
             if(sonImg.src.includes("sOn.png")){
@@ -461,10 +465,10 @@ function GameFramework(){
         tableauObjetGraphiques = [];
         particles=[];
 
-        var menu=document.querySelector("#theMenu");
-        var h1= document.createElement("h1");
-        var p= document.createElement("p");
-        var input= document.createElement("input");
+        let menu = document.querySelector("#theMenu");
+        let h1 = document.createElement("h1");
+        let p = document.createElement("p");
+        let input = document.createElement("input");
 
         h1.innerText="You Lose !";
         h1.id="youLose";
@@ -487,7 +491,7 @@ function GameFramework(){
     }
 
     function youPause() {
-        if(etatPause=true && player.pv>0) {
+        if(etatPause=player.pv > 0) {
 
             ctx.fillStyle = "white";
             ctx.font="90px Badass"
