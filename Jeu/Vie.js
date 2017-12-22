@@ -1,20 +1,23 @@
 class Vie{
-    constructor(posX,posY,taille,vitesse,pvRendu){
+    constructor(posX,posY,vitesse){
         this.posX = posX;
         this.posY= posY;
         this.vitesse=vitesse; //vitesse maximale
         this.vitesseX=vitesse;
         this.vitesseY=vitesse;
         this.pv=1;
-        this.taille = taille;
+        this.taille = 15;
         this.pvRendu=25;
+        this.img=new Image();
+        this.img.src='../ressources/heart.png';
     }
 
     draw(ctx) {
         ctx.save();
 
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.posX, this.posY, this.taille, this.taille);
+        /*ctx.fillStyle = "white";
+        ctx.fillRect(this.posX, this.posY, this.taille, this.taille);*/
+        ctx.drawImage(this.img,this.posX ,this.posY);
 
         ctx.restore();
     }

@@ -77,7 +77,7 @@ class Player{
         for(let i=0; i<this.atouts.length; i++){
             if(atout === this.atouts[i].nom){
                 this.atouts[i].dispo = true;
-                console.log(this.atouts[i]);
+                //console.log(this.atouts[i]);
             }
         }
     }
@@ -173,18 +173,24 @@ class Atout{
         this.dispo = false;
         this.activate = false;
         this.time = 5000;
+        this.taille=15;
+        this.img=new Image();
     }
 
     draw(ctx){
         ctx.save();
 
         if(this.nom === "invincible"){
-            ctx.fillStyle="yellow";
+            this.img.src="../ressources/star_yellow.png"
+            //ctx.fillStyle="yellow";
         }
         else if(this.nom === "degat"){
-            ctx.fillStyle="red";
+            this.img.src="../ressources/thunder.png"
+            // ctx.fillStyle="red";
         }
-        ctx.fillRect(this.posX,this.posY,10, 10);
+        //ctx.fillRect(this.posX,this.posY,this.taille, this.taille);
+        ctx.drawImage(this.img,this.posX,this.posY);
+
 
 
         ctx.restore();
@@ -200,8 +206,7 @@ class Atout{
     }
 
     touched(player) {
-        return ((this.posX <= player.posX && (player.posX <= (this.posX + 10)) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX + 10))) && ((this.posY <= player.posY && (player.posY <= (this.posY + 10)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY + 10)));
-
+        return ((this.posX <= player.posX && (player.posX <= (this.posX + this.taille )) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX + this.taille))) && ((this.posY <= player.posY && (player.posY <= (this.posY + this.taille)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY + this.taille)));
     }
 
 }

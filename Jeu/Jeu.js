@@ -32,6 +32,8 @@ function GameFramework(){
     var inputStates = [];
     var tableauObjetGraphiques = [];
     var etatPause = false;
+    var soundBool=true
+    var nomtheme = "";
 
     function init() {
 
@@ -42,6 +44,7 @@ function GameFramework(){
 
         creerJoueur();
         creationAleatoire();
+        console.log(nomtheme);
 
 
         //option Sonores
@@ -183,15 +186,14 @@ function GameFramework(){
 
     function creerVie() {
 
-            let taille=15;
             let x = (w-10) * Math.random();
-            let y = 0-taille;
+            let y = 0-15;
 
             min=3;
             max=6;
             let vitesse=(Math.random()*(max-min))+min;
 
-            let e = new Vie(x, y, taille, vitesse,25);
+            let e = new Vie(x, y, vitesse,25);
 
             tableauObjetGraphiques.push(e);
     }
@@ -339,7 +341,9 @@ function GameFramework(){
     }
 
     function addScore(valScore,ennemi,player,h) {
-        if(!ennemi.touched(player) && !ennemi.EnnemiEnDehorsCadre(h)){
+        if(player.atouts[0].activate && ennemi.touched(player)){
+            score+=valScore;
+        }else if(!ennemi.touched(player) && !ennemi.EnnemiEnDehorsCadre(h)){
             score+=valScore;
 
         }
@@ -463,15 +467,16 @@ function GameFramework(){
         let sonImg = document.querySelector("#sonImg");
 
         document.querySelector("#son").addEventListener('click',function (e) {
-            if(sonImg.src.includes("sOn.png")){
+            if(soundBool===true){
                 sonImg.src="../ressources/sOff.png";
                 player.pause();
+                soundBool=false;
             }
             else {
                 sonImg.src = "../ressources/sOn.png";
                 player.play();
+                soundBool=true;
             }
-
         });
     }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Menu Jeu</title>
@@ -9,6 +9,17 @@
 <div id="mainWindow">
     <div id="myCanvas" width="400" height="600">
         <h1>ALBATAR</h1>
+        <div id="choixthemes">
+            <form method="POST" action=".php">
+                <p>
+                    <label for="theme">Choisissez le thème</label>
+                    <select name="theme" id="theme">
+                        <option value="space">Space</option>
+                        <option value="miage">Miage</option>
+                    </select>
+                </p>
+            </form>
+        </div>
         <div id="boutonCommencer">
             <form method="POST" action="../Jeu/Jeu.html">
                 <input type="submit" name="Ok" value="Commencer" >
