@@ -43,6 +43,7 @@ function GameFramework(){
         creerJoueur();
         creationAleatoire();
 
+
         //option Sonores
         soundMusic();
         //
@@ -180,6 +181,21 @@ function GameFramework(){
         tableauObjetGraphiques.push(e);
     }
 
+    function creerVie() {
+
+            let taille=15;
+            let x = (w-10) * Math.random();
+            let y = 0-taille;
+
+            min=3;
+            max=6;
+            let vitesse=(Math.random()*(max-min))+min;
+
+            let e = new Vie(x, y, taille, vitesse,25);
+
+            tableauObjetGraphiques.push(e);
+    }
+
     function creationAleatoire() {
         multTemps=1;
 
@@ -190,6 +206,7 @@ function GameFramework(){
         intervalA = setInterval(function() {
             if((player.pv > 0) && (!etatPause) ){
                 creerAtout();
+                creerVie();
             }
         }, 15000);
 
@@ -365,9 +382,14 @@ function GameFramework(){
             }
             else if (e instanceof Projectile){
                 e.actionsProjectile(ctx,w,h,player,tableauObjetGraphiques);
+
             }
             else if (e instanceof Atout){
                 e.actionsAtout(ctx,player);
+
+            }else if(e instanceof Vie){
+                e.actionsVie(ctx,player,h);
+
             }
 
 

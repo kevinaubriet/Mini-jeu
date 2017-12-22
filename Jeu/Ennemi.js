@@ -119,6 +119,7 @@ class Ennemi {
             }
         }
     }
+
     EnnemiEnDehorsCadre(h){
         return (this.posY) > h;
     }
