@@ -1,5 +1,5 @@
 class Vie{
-    constructor(posX,posY,vitesse){
+    constructor(posX,posY,vitesse,pvRendu){
         this.posX = posX;
         this.posY= posY;
         this.vitesse=vitesse; //vitesse maximale
@@ -15,9 +15,11 @@ class Vie{
     draw(ctx) {
         ctx.save();
 
+
         /*ctx.fillStyle = "white";
         ctx.fillRect(this.posX, this.posY, this.taille, this.taille);*/
         ctx.drawImage(this.img,this.posX ,this.posY);
+
 
         ctx.restore();
     }
@@ -46,6 +48,7 @@ class Vie{
         if(this.touched(player)) {
             this.pv=0;
             this.ajoutPv(player);
+
         }
     }
 

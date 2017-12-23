@@ -6,11 +6,12 @@
     <link href="Menu.css" rel="stylesheet" media="all" type="text/css">
 </head>
 <body>
+<script src="Menu.js" type="text/javascript"></script>
 <div id="mainWindow">
     <div id="myCanvas" width="400" height="600">
         <h1>ALBATAR</h1>
         <div id="choixthemes">
-            <form method="POST" action=".php">
+            <form method="POST" action="">
                 <p>
                     <label for="theme">Choisissez le thème</label>
                     <select name="theme" id="theme">
@@ -21,11 +22,12 @@
             </form>
         </div>
         <div id="boutonCommencer">
-            <form method="POST" action="../Jeu/Jeu.html">
+            <form id="src"method="POST" action="../Jeu/Jeu.html">
                 <input type="submit" name="Ok" value="Commencer" >
             </form>
         </div>
     </div>
 </div>
+
 </body>
 </html>

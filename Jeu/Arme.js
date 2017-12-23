@@ -44,6 +44,7 @@ class Projectile{
         this.pv=1;
         this.couleur = couleur;
         this.typeArme = typeArme;
+
     }
 
 
@@ -71,7 +72,7 @@ class Projectile{
         this.move(ctx);
         this.testCollisionZone(ctx);
 
-        let self = this;       //SALE MAMENE UNE SOLUTION?
+        let self = this;
         tableauObjetGraphiques.forEach(function (e) {
             if (e instanceof Ennemi){
                 self.degatEnnemi(e,self.degat);
@@ -88,13 +89,7 @@ class Projectile{
         this.degat=0;
         this.pv=0;
     }
-    /*
-    * Cette fonction verifie si l'ennemi est touché
-    * si oui detruit le projectile en le mettant a 0pv
-    * et baisse les pv
-    *
-    * PB==> detruit plsr ennemies a la foid
-    */
+
     degatEnnemi(ennemi,nbr){
         if(this.touched(ennemi)){
             ennemi.retirerPvEnnemi(nbr);

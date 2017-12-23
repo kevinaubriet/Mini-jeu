@@ -77,7 +77,7 @@ class Player{
         for(let i=0; i<this.atouts.length; i++){
             if(atout === this.atouts[i].nom){
                 this.atouts[i].dispo = true;
-                //console.log(this.atouts[i]);
+                console.log(this.atouts[i]);
             }
         }
     }
@@ -158,7 +158,7 @@ class Player{
     }
 
     retirerPvJoueur(nbr){
-        this.pv-=nbr/2;  //Bug boucle appelée deux fois donc pv moins doublés
+        this.pv-=nbr/2;
     }
 
 }
@@ -175,6 +175,7 @@ class Atout{
         this.time = 5000;
         this.taille=15;
         this.img=new Image();
+
     }
 
     draw(ctx){
@@ -186,7 +187,7 @@ class Atout{
         }
         else if(this.nom === "degat"){
             this.img.src="../ressources/thunder.png"
-            // ctx.fillStyle="red";
+           // ctx.fillStyle="red";
         }
         //ctx.fillRect(this.posX,this.posY,this.taille, this.taille);
         ctx.drawImage(this.img,this.posX,this.posY);
@@ -207,6 +208,7 @@ class Atout{
 
     touched(player) {
         return ((this.posX <= player.posX && (player.posX <= (this.posX + this.taille )) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX + this.taille))) && ((this.posY <= player.posY && (player.posY <= (this.posY + this.taille)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY + this.taille)));
+
     }
 
 }

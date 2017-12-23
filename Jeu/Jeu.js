@@ -1,25 +1,7 @@
 window.onload = init;
 var particles = [];
 
-/*
-*Sound fire dans fonction tir()
- */
 
-/*Ajout de plein de trucs et amélioration de plein de truc mais je sais plus quoi :D
-*Et les particules pour modfier des props de ca appelle moi je t'explique
-* ==>Methode actionJeu applique diffirentes methodes dans la boucle d'animation dont killME
- */
-/*IDEE
-*Integrer les action de changement d'arme dans le listener des controle de deplacement?
-* Retirer les commentaire de selection d'arme?
-* Rendre bien propre les fonction creeXXXX de jeu.js
-*
- */
-
-/*
-pluiseurs ennemis
-/*corection dans projectile retirer pv
- */
 function init() {
     gf = new GameFramework();
     gf.init();
@@ -27,13 +9,12 @@ function init() {
 }
 
 function GameFramework(){
-    var canvas,ctx,w,h,player;
+    var canvas,ctx,w,h,player,soundBool=true;
     var score = 0;
     var inputStates = [];
     var tableauObjetGraphiques = [];
     var etatPause = false;
-    var soundBool=true
-    var nomtheme = "";
+
 
     function init() {
 
@@ -44,15 +25,13 @@ function GameFramework(){
 
         creerJoueur();
         creationAleatoire();
-        console.log(nomtheme);
 
 
         //option Sonores
         soundMusic();
-        //
 
 
-        //Test menu fin
+
 
 
         window.addEventListener('keydown', function(event) {
@@ -110,17 +89,13 @@ function GameFramework(){
                     if(player.getArmeActive().nom !== "fusil_normal"){
                         player.ActiverArme("fusil_normal");
                     }
-                    else {
-                        console.log("arme déja active");
-                    }
+
                 }
 
             } else if(event.keyCode === 79){
                 if((player.pv > 0) && (!etatPause)){
                     if(player.getArmeActive().nom !== "fusil_pompe"){
                         player.ActiverArme("fusil_pompe");
-                    }else{
-                        console.log("arme déja active");
                     }
                 }
 
@@ -128,19 +103,20 @@ function GameFramework(){
                 if((player.pv > 0) && (!etatPause)){
                     if(player.getArmeActive().nom !== "fusil_sniper"){
                         player.ActiverArme("fusil_sniper");
-                    }else{
-                        console.log("arme déja active");
                     }
                 }
 
             }else if(event.keyCode === 77){
                 if((player.pv > 0) && (!etatPause)){
                     player.ActiverAtout("invincible");
+                    soundAtout();
+
                 }
 
             }else if(event.keyCode === 76){
                 if((player.pv > 0) && (!etatPause)){
                     player.ActiverAtout("degat");
+                    soundAtout();
                 }
 
             }else if (event.keyCode === 78){
@@ -158,7 +134,7 @@ function GameFramework(){
         let x =w/2-10;
         let y = h*0.8;
         let pv=100;
-        let v = 5;                //Pour changer la vitesse en fonction du niveau ajouter les modif de cette variable dans le constructeur
+        let v = 5;
 
         let p1 = new Player(x, y, v,pv);
         p1.ActiverArme("fusil_normal");
@@ -262,7 +238,6 @@ function GameFramework(){
 
     function creerProjectile(){
         let projectile;
-//forme,degat,vitesse,posX,posY,couleur,taille
 
         let armeCourante = player.getArmeActive();
 
@@ -283,7 +258,6 @@ function GameFramework(){
         let projectile;
         let tempEcoule = 0;
 
-        document.querySelector("#soundFire").play();
 
         let armeCourante = player.getArmeActive();
 
@@ -318,6 +292,7 @@ function GameFramework(){
             }
             // on mémorise le dernier temps.
             this.lastBulletTime = time;
+            soundFire();
         }
     }
 
@@ -330,10 +305,15 @@ function GameFramework(){
                 youFail();
             }
             if(e instanceof Ennemi){
-                if(!e.EnnemiEnDehorsCadre(h))
-                    startDoubleExplosion((e.posX+e.taille/2),(e.posY+e.taille/2));
-                //Permet de calculer le score
-                addScore(25,e,player,h);
+                if(!e.EnnemiEnDehorsCadre(h)) {
+                    startDoubleExplosion((e.posX + e.taille / 2), (e.posY + e.taille / 2));
+                    soundExplo();
+                }
+                     addScore(25,e,player,h);
+
+            }
+            if(e instanceof Vie){
+                soundLifeUp();
             }
             return true;
         }
@@ -341,9 +321,7 @@ function GameFramework(){
     }
 
     function addScore(valScore,ennemi,player,h) {
-        if(player.atouts[0].activate && ennemi.touched(player)){
-            score+=valScore;
-        }else if(!ennemi.touched(player) && !ennemi.EnnemiEnDehorsCadre(h)){
+        if(!ennemi.touched(player) && !ennemi.EnnemiEnDehorsCadre(h)){
             score+=valScore;
 
         }
@@ -395,12 +373,9 @@ function GameFramework(){
                 e.actionsVie(ctx,player,h);
 
             }
-
-
         });
         }else{
             youPause();
-            //console.log("pause");
         }
 
         requestAnimationFrame(anime);
@@ -432,15 +407,12 @@ function GameFramework(){
             if(atouts[i].dispo){
                 if(atouts[i].activate){
                     document.getElementById(atouts[i].nom).style.backgroundColor = "gold";
-                    //console.log("dispo et activé");
                 }else{
                     let nomimg = atouts[i].nom+"img";
 
                     document.getElementById(atouts[i].nom).style.backgroundColor = "black";
-                    //document.getElementById(atouts[i].nom+"img").style.display="block";
                     document.getElementById(nomimg).style.display="block";
 
-                    //console.log("dispo et pas activé");
                 }
             }
             else{
@@ -449,13 +421,11 @@ function GameFramework(){
 
                     document.getElementById(atouts[i].nom).style.backgroundColor = "gold";
                     document.getElementById(nomimg).style.display="block";
-                    //console.log("pas dispo et activé");
                 }else{
                     let nomimg = atouts[i].nom+"img";
 
                     document.getElementById(atouts[i].nom).style.backgroundColor = "black";
                     document.getElementById(nomimg).style.display="none";
-                    //console.log("pas dispo et pas activé");
                 }
             }
 
@@ -477,7 +447,42 @@ function GameFramework(){
                 player.play();
                 soundBool=true;
             }
+
         });
+
+    }
+
+    function soundFire() {
+        if(soundBool){
+            var soundFire =document.querySelector("#soundFire");
+            soundFire.pause();
+            soundFire.currentTime=0;
+            soundFire.play();
+        }
+    }
+    function soundExplo() {
+        if(soundBool){
+            var soundExplo =document.querySelector("#soundExplo");
+            soundExplo.pause();
+            soundExplo.currentTime=0;
+            soundExplo.play();
+        }
+    }
+    function soundAtout() {
+        if(soundBool){
+            var soundAtout =document.querySelector("#soundAtout");
+            soundAtout.pause();
+            soundAtout.currentTime=0;
+            soundAtout.play();
+        }
+    }
+    function soundLifeUp() {
+        if(soundBool){
+            var soundUp =document.querySelector("#soundLife");
+            soundUp.pause();
+            soundUp.currentTime=0;
+            soundUp.play();
+        }
     }
 
 
@@ -538,12 +543,7 @@ function GameFramework(){
     }
 
     return {
-        init:init,
-        /*creerJoueur:creerJoueur,
-        creerEnnemisLeger:creerEnnemisLeger,
-        creerEnnemisLourd:creerEnnemisLourd,*/
-        getTableauObjetsGraphiques:getTableauObjetsGraphiques
-
+        init:init
     }
 
 
