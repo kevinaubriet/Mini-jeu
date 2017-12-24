@@ -1,3 +1,4 @@
+/*
 window.onload = init;
 
 function init() {
@@ -12,4 +13,4 @@ function getReponseFormumaire(){
 
     return valeur;
 }
-//../Jeu/Jeu.html
+*/

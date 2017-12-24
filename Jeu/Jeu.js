@@ -14,6 +14,8 @@ function GameFramework(){
     var inputStates = [];
     var tableauObjetGraphiques = [];
     var etatPause = false;
+    var tempsCréationEnemiLeger = 3000;
+    var tempsCréationEnemiLourd = 8000;
 
 
     function init() {
@@ -24,7 +26,11 @@ function GameFramework(){
         h = canvas.height;
 
         creerJoueur();
-        creationAleatoire();
+        changeIntervalle();
+        creationAleatoireEnemiLeger();
+        creationAleatoireEnemiLourd();
+        creationAleatoireBonus();
+
 
 
         //option Sonores
@@ -120,9 +126,11 @@ function GameFramework(){
                 }
 
             }else if (event.keyCode === 78){
-
-                etatPause = !etatPause;
-
+                if(etatPause){
+                    etatPause = false;
+                    creationAleatoireEnemiLeger();
+                    creationAleatoireEnemiLourd();
+                }else etatPause = true;
             }
         }, false);
 
@@ -174,7 +182,57 @@ function GameFramework(){
             tableauObjetGraphiques.push(e);
     }
 
-    function creationAleatoire() {
+    function creationAleatoireEnemiLeger(){
+
+        if((player.pv > 0) && (!etatPause) ){
+
+            creerEnnemisLeger(1);
+
+            setTimeout(function () {
+                creationAleatoireEnemiLeger();
+            },tempsCréationEnemiLeger);
+        }
+
+    }
+
+    function creationAleatoireEnemiLourd(){
+        if((player.pv > 0) && (!etatPause) ){
+
+            creerEnnemisLourd(1);
+
+            setTimeout(function () {
+                creationAleatoireEnemiLourd();
+            },tempsCréationEnemiLourd);
+        }
+    }
+
+    function creationAleatoireBonus(){
+        setInterval(function() {
+            if((player.pv > 0) && (!etatPause) ){
+                creerAtout();
+                creerVie();
+            }
+        }, 15000);
+    }
+
+    function changeIntervalle() {
+        setInterval(function () {
+            if((player.pv > 0) && (!etatPause) ){
+                if(tempsCréationEnemiLourd>1000){
+                    tempsCréationEnemiLourd -= 150;
+                }
+                if(tempsCréationEnemiLeger>500){
+                    tempsCréationEnemiLeger -= 100;
+                }
+                console.log("intervale leger = "+ tempsCréationEnemiLeger);
+                console.log("intervale lourd = "+ tempsCréationEnemiLourd);
+
+            }
+        },5000);
+
+    }
+
+        /*
         multTemps=1;
 
         setInterval(function () {
@@ -199,8 +257,8 @@ function GameFramework(){
             if((player.pv > 0) && (!etatPause)){
                 creerEnnemisLourd(1);
             }
-        }, 8000*multTemps);
-    }
+        }, 8000*multTemps);*/
+
 
     function creerEnnemisLeger(n){
 
@@ -235,24 +293,6 @@ function GameFramework(){
 
         }
     }
-
-    function creerProjectile(){
-        let projectile;
-
-        let armeCourante = player.getArmeActive();
-
-        if(armeCourante instanceof FusilNormal){
-            projectile = new Projectile("carrée",25*player.multDegat,3,player.posX+player.width/2,player.posY,"red",1);
-
-        }else if(armeCourante instanceof FusilSniper){
-            projectile = new Projectile("carrée", 10 * player.multDegat, 10, player.posX + player.width / 2, player.posY, "green", 1);
-
-        }else if(armeCourante instanceof FusilPompe){
-            projectile = new Projectile("carrée",50*player.multDegat,1.5,player.posX+player.width/2,player.posY,"blue",1);
-        }
-        tableauObjetGraphiques.push(projectile);
-
-    }
     
     function tir(time) {
         let projectile;
@@ -265,15 +305,15 @@ function GameFramework(){
             projectile = new Projectile("carrée",25*player.multDegat,3,0,player.posX+player.width/2,player.posY,"red",armeCourante.nom);
 
         }else if(armeCourante instanceof FusilSniper){
-            projectile = new Projectile("carrée", 100 * player.multDegat, 10, 0, player.posX + player.width / 2, player.posY, "white", armeCourante.nom);
+            projectile = new Projectile("carrée", 200* player.multDegat, 10, 0, player.posX + player.width / 2, player.posY, "white", armeCourante.nom);
 
         }else if(armeCourante instanceof FusilPompe){
             let cone = 0.25;
-            var p1 = new Projectile("carrée",50*player.multDegat,7,0,player.posX+player.width/2,player.posY,"blue",armeCourante.nom);
-            var p2 = new Projectile("carrée",50*player.multDegat,7,cone,(player.posX+player.width/2),player.posY,"blue",1);
-            var p3 = new Projectile("carrée",50*player.multDegat,7,-cone,(player.posX+player.width/2),player.posY,"blue",1);
-            var p4 = new Projectile("carrée",50*player.multDegat,7,cone*2,(player.posX+player.width/2),player.posY,"blue",1);
-            var p5 = new Projectile("carrée",50*player.multDegat,7,-cone*2,(player.posX+player.width/2),player.posY,"blue",1);
+            var p1 = new Projectile("carrée",75*player.multDegat,7,0,player.posX+player.width/2,player.posY,"blue",armeCourante.nom);
+            var p2 = new Projectile("carrée",75*player.multDegat,7,cone,(player.posX+player.width/2),player.posY,"blue",armeCourante.nom);
+            var p3 = new Projectile("carrée",75*player.multDegat,7,-cone,(player.posX+player.width/2),player.posY,"blue",armeCourante.nom);
+            var p4 = new Projectile("carrée",75*player.multDegat,7,cone*2,(player.posX+player.width/2),player.posY,"blue",armeCourante.nom);
+            var p5 = new Projectile("carrée",75*player.multDegat,7,-cone*2,(player.posX+player.width/2),player.posY,"blue",armeCourante.nom);
         }
 
         if(this.lastBulletTime !== undefined) {

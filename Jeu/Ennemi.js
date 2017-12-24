@@ -137,7 +137,7 @@ class EnnemiLeger extends Ennemi{
 
 class EnnemiLourd extends Ennemi{
     constructor(posX, posY,typeE,taille,vitesse){
-        super(posX, posY,typeE,taille,vitesse/1.5,100,40);    //vitesse 50% fois plus lente que leger
+        super(posX, posY,typeE,taille,vitesse/1.5,200,40);    //vitesse 50% fois plus lente que leger
         this.img.src='../ressources/spaceShipEnnemiLourd.png';
     }
 

@@ -57,6 +57,9 @@ class Projectile{
     move() {
         this.posY -= this.vitesse;
         this.posX += this.vitesseX;
+        if(this.typeArme == "fusil_pompe" && this.degat>1){
+            this.degat-=1;
+        }
     }
 
 
