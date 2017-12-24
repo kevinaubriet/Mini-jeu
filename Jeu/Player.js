@@ -2,7 +2,7 @@ class Player{
     constructor(posX,posY,vitesse,pv){
         this.posX = posX;
         this.posY = posY;
-        this.width = 20;                //A modif selon taille voulue
+        this.width = 20;
         this.height = 20;
         this.posY = posY;
         this.vitesse=vitesse;
@@ -17,6 +17,9 @@ class Player{
         this.img.src='../ressources/spaceShipPlayer.png';
     }
 
+    /*
+     * fonction qui renvoie l'arme active du joueur
+     */
     getArmeActive(){
         for(let i =0; i< this.armes.length; i++){
             if(this.armes[i].activate === true){
@@ -25,6 +28,9 @@ class Player{
         }
     }
 
+    /*
+     * fonction qui active l'arme en parametre et desactive la derniere activée
+     */
     ActiverArme(arme){
         for(let i =0; i<this.armes.length; i++){
             if(this.armes[i].activate===true)
@@ -35,35 +41,35 @@ class Player{
         }
     }
 
+    /*
+     * fonction qui permet au joueur d'activer un atout si celui la est disponnible (l'atout se désactive au bout de quelque seconde)
+     */
     ActiverAtout(atout){
         for(let i = 0; i<this.atouts.length; i++){
             if(this.atouts[i].dispo === false && this.atouts[i].nom === atout){
-                console.log("atout "+this.atouts[i].nom +" pas dispo");
             }
             else if(this.atouts[i].dispo === true && this.atouts[i].nom === atout){
 
                 if(atout === "degat"){
-                    let joueur =this; //SALE MAMENE
+                    let joueur =this;
                     this.atouts[i].activate = true;
                     this.multDegat = 2;
                     setTimeout(function () {
                         joueur.multDegat = 1;
                         joueur.atouts[1].activate = false;
-                    },joueur.atouts[i].time);// TEMPS DE L'ACTION = 5s
+                    },joueur.atouts[i].time);
 
-                    //console.log("degattttt activé");
                     this.atouts[i].dispo = false;
                 }
                 else if(atout === "invincible"){
-                    let joueur =this;//SALE MAMENE
+                    let joueur =this;
                     this.atouts[i].activate = true;
                     this.invincible = true;
                     setTimeout(function () {
                         joueur.invincible = false;
                         joueur.atouts[0].activate = false;
-                    },joueur.atouts[i].time);// TEMPS DE L'ACTION = 5s
+                    },joueur.atouts[i].time);
 
-                    //console.log("inviiincible activé");
                     this.atouts[i].dispo = false;
                 }
 
@@ -73,25 +79,31 @@ class Player{
         }
     }
 
+    /*
+     * fonction qui rend disponible un atout
+     */
     DispoAtout(atout){
         for(let i=0; i<this.atouts.length; i++){
             if(atout === this.atouts[i].nom){
                 this.atouts[i].dispo = true;
-                console.log(this.atouts[i]);
             }
         }
     }
 
-    actionsPlayer(ctx,w,h){  //differentes actions effectuées dans la boucle d'animation
+    /*
+     * fonction qui effectues les différentes actions du joueur (se trouve dans la boucle d'animation)
+     */
+    actionsPlayer(ctx,w,h){
         this.draw(ctx);
         this.move(ctx);
         this.testCollisionZone(w,h);
     }
 
+    /*
+     * fonction qui draw le joueur , si un atout est activé un aura sera visible
+     */
     draw(ctx) {
         ctx.save();
-        /*ctx.fillStyle = "white";
-        ctx.fillRect(this.posX, this.posY, this.width, this.height);*/
 
         ctx.drawImage(this.img,this.posX-5 ,this.posY-7);
 
@@ -119,6 +131,9 @@ class Player{
         ctx.restore();
     }
 
+    /*
+     * fonction qui draw un aura autour du joueur
+     */
     aura(ctx, couleur,taille)
     {
         let posx =this.posX+(this.width/2);
@@ -138,8 +153,9 @@ class Player{
         this.posY += this.vitesseY;
     }
 
-
-
+    /*
+     * fonction qui teste la collision de la zone du canvas
+     */
     testCollisionZone(w, h) {
         if ((this.posX + this.width) > w) {
             this.posX=w-this.width;
@@ -157,6 +173,9 @@ class Player{
         }
     }
 
+    /*
+     * fonction qui retire des pv au joueur
+     */
     retirerPvJoueur(nbr){
         this.pv-=nbr/2;
     }
@@ -183,13 +202,10 @@ class Atout{
 
         if(this.nom === "invincible"){
             this.img.src="../ressources/star_yellow.png"
-            //ctx.fillStyle="yellow";
         }
         else if(this.nom === "degat"){
             this.img.src="../ressources/thunder.png"
-           // ctx.fillStyle="red";
         }
-        //ctx.fillRect(this.posX,this.posY,this.taille, this.taille);
         ctx.drawImage(this.img,this.posX,this.posY);
 
 
@@ -197,6 +213,9 @@ class Atout{
         ctx.restore();
     }
 
+    /*
+    * fonction qui effectues les différentes actions de l'atout  (se trouve dans la boucle d'animation)
+    */
     actionsAtout(ctx,player){
         this.draw(ctx);
         if(this.touched(player)){
@@ -206,6 +225,9 @@ class Atout{
 
     }
 
+    /*
+     * fonction qui renvoie si l'atout touche le joueur ou pas
+     */
     touched(player) {
         return ((this.posX <= player.posX && (player.posX <= (this.posX + this.taille )) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX + this.taille))) && ((this.posY <= player.posY && (player.posY <= (this.posY + this.taille)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY + this.taille)));
 

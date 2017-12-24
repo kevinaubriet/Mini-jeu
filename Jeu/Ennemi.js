@@ -16,12 +16,10 @@ class Ennemi {
     draw(ctx) {
         ctx.save();
 
-        /*ctx.fillStyle = "grey";
-        ctx.fillRect(this.posX, this.posY, this.taille, this.taille);*/
-
         ctx.drawImage(this.img,this.posX,this.posY);
         ctx.fillStyle = "white";
         ctx.fillText(this.pv,(this.posX+this.taille/6),(this.posY-this.taille/4),this.taille);
+
         ctx.restore();
     }
 
@@ -35,6 +33,9 @@ class Ennemi {
         }
     }
 
+    /*
+     *fonction actionsEnnemi qui effectues les différentes actions de l'ennemi (se trouve dans la boucle d'animation)
+     */
     actionsEnnemi(ctx,w,h,player){  //differentes actions effectuées dans la boucle d'animation
         this.draw(ctx);
         this.move(ctx);
@@ -57,8 +58,9 @@ class Ennemi {
         this.posY += this.vitesseY;
     }
 
-
-
+    /*
+     *fonction testCollisionZone qui teste la collision de la zone et qui inverse le déplacement des ennemis
+     */
     testCollisionZone(w, h) {
         if ((this.posX + this.taille) > w) {
             this.inverseSensDeplacementX();
@@ -66,9 +68,6 @@ class Ennemi {
         if (this.posX < 0) {
             this.inverseSensDeplacementX();
         }
-
-        /*if ((this.posY ) > h) {
-        }*/
 
         if (this.posY < 0-this.taille) {
             this.inverseSensDeplacementY();
@@ -82,13 +81,19 @@ class Ennemi {
         this.vitesseY = -this.vitesseY;
     }
 
-    followPlayer(player){} //utilisée que pour l'ennemi lourd
+    followPlayer(player){}
 
+    /*
+     *fonction touched qui teste la collision entre un ennemi et le joueur
+     */
     touched(player) {
         return ((this.posX <= player.posX && (player.posX <= (this.posX + this.taille)) || (player.posX + player.height) >= this.posX && player.posX <= (this.posX + this.taille))) && ((this.posY <= player.posY && (player.posY <= (this.posY + this.taille)) || (player.posY + player.width) >= this.posY && player.posY <= (this.posY + this.taille)));
 
     }
 
+    /*
+     *fonction retirerPvJoueurQuandEnnemiTouche qui si l'ennemi touche le joueur, lui retire des pv en fonction de ses dégats
+     */
     retirerPvJoueurQuandEnnemiTouche(player){
         if(this.touched(player)) {
             this.pv=0;
@@ -98,6 +103,9 @@ class Ennemi {
         }
     }
 
+    /*
+     *fonction retirerPvEnnemi qui retire les pv de l'ennemi
+     */
     retirerPvEnnemi(nbr){
         this.pv -= nbr;
     }
@@ -120,6 +128,9 @@ class Ennemi {
         }
     }
 
+    /*
+     *fonction EnnemiEnDehorsCadre qui verifie si l'ennemi est sorti du canvas
+     */
     EnnemiEnDehorsCadre(h){
         return (this.posY) > h;
     }
@@ -137,10 +148,13 @@ class EnnemiLeger extends Ennemi{
 
 class EnnemiLourd extends Ennemi{
     constructor(posX, posY,typeE,taille,vitesse){
-        super(posX, posY,typeE,taille,vitesse/1.5,200,40);    //vitesse 50% fois plus lente que leger
+        super(posX, posY,typeE,taille,vitesse/1.5,200,40);
         this.img.src='../ressources/spaceShipEnnemiLourd.png';
     }
 
+    /*
+     *fonction followPlayer qui permet à l'enemie lourd de suivre le joueur sur l'axe des X
+     */
     followPlayer(player){
         if(this.posX<player.posX){
             this.vitesseX=this.vitesse;
